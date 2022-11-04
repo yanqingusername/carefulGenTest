@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>样本绑定</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" type="text/css" href="../css/exam.css">
+    <link rel="stylesheet" type="text/css" href="../css/pintuer.css" />
+    <link rel="stylesheet" type="text/css" href="../css/shop.css" />
+
+    <style type="text/css">
+        progress {
+            width: 100%;
+            height: 5px;
+            color: #f00;
+            background: #EFEFF4;
+            border-radius: 0.1rem;
+        }
+
+        progress::-webkit-progress-bar {
+            background-color: #f2f2f2;
+            border-radius: 0.2rem;
+        }
+
+        progress::-webkit-progress-value {
+            background: #74CFC8;
+            border-radius: 0.2rem;
+        }
+
+
+        /*价格搜索input框*/
+        input,
+        button {
+            border: none;
+            outline: none;
+        }
+
+        .tl-price-input {
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 7px 0;
+            background: #F4F4F7;
+            border-radius: 3px;
+            padding-left: 5px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
+        }
+
+        .tl-price-input:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+        }
+
+        .ant-btn {
+            line-height: 1.499;
+            position: relative;
+            display: inline-block;
+            font-weight: 400;
+            white-space: nowrap;
+            text-align: center;
+            background-image: none;
+            border: 1px solid transparent;
+            -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+            cursor: pointer;
+            -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            transition: all .3s cubic-bezier(.645, .045, .355, 1);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            height: 37px;
+            padding: 0 15px;
+            font-size: 14px;
+            border-radius: 4px;
+            color: rgba(0, 0, 0, 0.65);
+            background-color: #fff;
+            border-color: #d9d9d9;
+        }
+
+        .ant-btn-primary {
+            color: #fff;
+            background-color: #1890ff;
+            border-color: #1890ff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+        }
+
+        .ant-btn-red {
+            color: #fff;
+            background-color: #74CFC8;
+            border-color: #74CFC8;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+        }
+        .question{
+            color:#72CDC7;
+            font-weight: 600;
+        }
+        .P3{width:100%;display:flex;align-items: center;margin-top:5px;float:left;}
+        .P3_1{width:40%;}
+        .P3_1_1{width: 30%}
+        .P4{width:100%;margin-top:5%;float:left;}
+        .P4_1{width:100%;
+            color:#72CDC7;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .P4_2{width:100%;font-size: 13px;}
+        .personInfo{
+            position: absolute;
+            top: 200px;
+            width: 80%;
+            margin-left: 10%;
+            border: 1px solid;
+            border-radius: 15px;
+            height: 230px;
+            font-size: 13px;
+            background-color: #ffffff;
+        }
+        .page{
+            width:100%;height:auto;float:left;
+        }
+        .bodyClass{
+            display: flex;
+            flex-direction:column;
+            min-height:100vh;
+            height: 900px;
+        }
+        .headText{
+            position: absolute;
+            top: 100px;
+            font-size: 35px;
+            width: 50%;
+            margin-left: 20%;
+            color: #fff;
+            font-weight: 600;
+        }
+        .upText1{
+            display: flex;
+            width: 100%;
+            margin-top: 6%;
+        }
+    </style>
+
+</head>
+
+<body class="bodyClass" >
+<div class="page">
+    <div style="width:100%;float:left;">
+        <img alt="" style="height:auto;width:100%;"
+             src="http://store.coyotebio-lab.com//carefulGenTest/test/images/helicobacter.png">
+    </div>
+    <div class="headText">
+        幽门螺杆菌
+        检测申请单
+    </div>
+    <div id="personInfo" class="personInfo">
+        <div  style="display: flex;width: 100%;margin-top: 9%;">
+            <div style="display: flex;width: 40%;margin-left: 8%;">
+                <div style="height: 100%;width: 25%;font-size: 12px;">姓名:</div>
+                <div style="width: 75%;border-bottom: 1px solid;height: 100%;"><input style="
+    width: 100%;" maxlength="10" id="name"  type="text" value="" onfocus="setToTopfirst(this)" onblur="resume()"></div>
+            </div>
+            <div style="display: flex;width: 40%;margin-right: 8%;margin-left: 4%;">
+                <div style="height: 100%;width: 25%;font-size: 12px;">性别:</div>
+                <div style="width: 75%;border-bottom: 1px solid;height: 100%;">
+                    <select style="width: 100%;border: 0.1px;" id="sex">
+                        <option value ="男">男</option>
+                        <option value ="女">女</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="display: flex;width: 100%;margin-top: 9%;">
+            <div style="display: flex;width: 40%;margin-left: 8%;">
+                <div style="height: 100%;width: 25%;font-size: 12px;">年龄:</div>
+                <div style="width: 75%;border-bottom: 1px solid;height: 100%;"><input style="
+    width: 100%;" maxlength="3"  id="age" type="number" value="" onfocus="setToTopfirst(this)" onblur="resume()"></div>
+            </div>
+            <div style="display: flex;width: 48%;margin-left: 4%;">
+                <div style="height: 100%;width: 30%;font-size: 12px;">条码号:</div>
+                <div style="width: 63%;border-bottom: 1px solid;height: 100%;" id="sample_id"></div>
+            </div>
+        </div>
+
+        <div style="display: flex;width: 100%;margin-top: 9%;">
+            <div style="display: flex;width: 92%;margin-left: 8%;">
+                <div style="height: 100%;width: 17%;font-size: 12px;">手机号:</div>
+                <div style="width: 40%;border-bottom: 1px solid;height: 100%;"><input style="width: 100%;    font-size: 14px;" maxlength="11" placeholder="仅用于报告查看" id="phone"  type="tel" value="" onfocus="setToTopfirst(this)"></div>
+            </div>
+        </div>
+        <div style="display: flex;width: 100%;margin-top: 9%;">
+            <div style="display: flex;width: 92%;margin-left: 8%;">
+                <div style="height: 100%;width: 17%;font-size: 12px;">验证码:</div>
+                <div style="width: 40%;border-bottom: 1px solid;height: 100%;">
+                    <input id="ybbm" style="width: 100%;">
+                </div>
+                <button type="button"  class="ant-btn ant-btn-red yanzhengma" style="height: 100%;width: 33%;text-align: center;font-size: 10px;">发送验证码</button>
+            </div>
+        </div>
+        <!--<div style="display: flex;width: 100%;margin-top: 6%;">
+            <div style="display: flex;width: 92%;margin-left: 8%;">
+                <div style="height: 100%;width: 20%;font-size: 12px;">采样时间:</div>
+                <div style="width: 42%;border-bottom: 1px solid;height: 100%;"><input style="width: 100%;font-size: 14px;"  id="sampling_time" placeholder="年-月-日 时-分"></div>
+            </div>
+        </div>-->
+    </div>
+
+    <div style="width:100%;height:auto;float:left;" id="sampleInfo">
+    </div>
+    <div class="lifInfo" style="position: absolute;top: 500px;left: 10%;height: 500px;font-family: ui-monospace;/* bottom: -7px; */" >
+        <div style="font-weight: 600">
+            请根据受检人情况进行选择:
+        </div>
+
+        <div class="P4">
+            <div class="P4_1">1.是否有过幽门螺杆菌治疗经历：</div>
+            <div class="P4_2">
+                <div class="wrap" style="font-size: inherit;" id="sf1">
+                    <div style="float:left;width:20%;">
+                        <label   style="width:auto" for="sf11"><span style="font-weight: normal;">是</span></label>
+                        <input type="radio"  id="sf11" name="sf1" value="是" class="" />
+
+                    </div>
+                    <div style="float:left;width:20%;">
+                        <label for="sf12" style="width:auto"><span style="font-weight: normal;">否</span></label>
+                        <input type="radio" id="sf12" name="sf1" value="否" class="" checked/>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="P4">
+            <div class="P4_1">2、是否有以下症状?（多选）</div>
+            <div class="P4_2">
+                <div class="wrap" style="font-size: inherit;">
+                    <div style="float:left;width:40%;">
+                        <input type="checkbox" id="sf21" name="sf2" value="轻微胃部不适" />
+                        <label   style="width:auto" for="sf21"><span style="font-weight: normal;">轻微胃部不适</span></label>
+                    </div>
+
+                    <div style="float:left;width:30%;">
+                        <input type="checkbox" id="sf22" name="sf2" value="胃溃疡" />
+                        <label   style="width:auto" for="sf22"><span style="font-weight: normal;">胃溃疡</span></label>
+                    </div>
+
+                </div>
+                <div class="wrap" style="font-size: inherit;">
+                    <div style="float:left;width:40%;">
+                        <input type="checkbox" id="sf23" name="sf2" value="泛酸、烧心" />
+                        <label   style="width:auto" for="sf23"><span style="font-weight: normal;">泛酸、烧心</span></label>
+                    </div>
+
+                    <div style="float:left;width:60%;">
+                        <input type="checkbox" id="sf24" name="sf2" value="否"  checked/>
+                        <label   style="width:auto" for="sf24"><span style="font-weight: normal;">否</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="P4">
+            <div class="P4_1">3、直系亲属或身边朋友其中是否有幽门螺杆菌感染者?</div>
+            <div class="P4_2">
+                <div class="wrap" style="font-size: inherit;" id="sf3">
+                    <div style="float:left;width:20%;">
+                        <input type="radio" id="sf31" name="sf3" value="是"  />
+                        <label   style="width:auto" for="sf3"><span style="font-weight: normal;">是</span></label>
+                    </div>
+                    <div style="float:left;width:20%;">
+                        <input type="radio" id="sf32" name="sf3" value="否"  checked/>
+                        <label for="sf32" style="width:auto"><span style="font-weight: normal;">否</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="P4">
+            <div class="P4_1">4、是否有睡觉前喝奶的习惯?</div>
+            <div class="P4_2">
+                <div class="wrap" style="font-size: inherit;" id="sf4">
+                    <div style="float:left;width: 20%;">
+                        <input type="radio" id="sf41" name="sf4" value="没有"  />
+                        <label   style="width:auto" for="sf41"><span style="font-weight: normal;">没有</span></label>
+                    </div>
+                    <div style="float:left;width:20%;">
+                        <input type="radio" id="sf42" name="sf4" value="偶尔有" />
+                        <label for="sf42" style="width:auto"><span style="font-weight: normal;">偶尔有</span></label>
+                    </div>
+                    <div style="float:left;width:20%;">
+                        <input type="radio" id="sf43" name="sf4" value="有"  checked/>
+                        <label for="sf43" style="width:auto"><span style="font-weight: normal;">有</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="P4">
+            <div class="P4_1">5、是否每天刷牙?刷几次牙?</div>
+            <div class="P4_2">
+                <div class="wrap" style="font-size: inherit;" id="sf5">
+                    <div style="float:left;width:38%;">
+                        <input type="radio" id="sf51" name="sf5" value="早晚或饭后都刷"  />
+                        <label   style="width:auto" for="sf51"><span style="font-weight: normal;">早晚或饭后都刷</span></label>
+                    </div>
+                    <div style="float:left;width:17%;">
+                        <input type="radio" id="sf52" name="sf5" value="1次" />
+                        <label for="sf52" style="width:auto"><span style="font-weight: normal;">1 次</span></label>
+                    </div>
+                    <div style="float:left;width:45%;">
+                        <input type="radio" id="sf53" name="sf5" value="几天1次或不刷" checked/>
+                        <label for="sf53" style="width:auto"><span style="font-weight: normal;">几天 1 次或不刷</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="P4">
+            <div class="P4_1">6、饮食喜好性?</div>
+            <div class="P4_2">
+                <div class="wrap" style="font-size: inherit;" >
+                    <div style="float:left;width:30%;">
+                        <input type="radio" id="sf61" name="sf6" value="中性类食物"  />
+                        <label   style="width:auto" for="sf61"><span style="font-weight: normal;">中性类食物</span></label>
+                    </div>
+                    <div style="float:left;width:50%;">
+                        <input type="radio" id="sf62" name="sf6" value="偏甜" />
+                        <label for="sf62" style="width:auto"><span style="font-weight: normal;">偏甜</span></label>
+                    </div>
+                </div>
+                <div class="wrap" style="font-size: inherit;" >
+                    <div style="float:left;width:30%;">
+                        <input type="radio" id="sf63" name="sf6" value="偏酸" />
+                        <label for="sf63" style="width:auto"><span style="font-weight: normal;">偏酸</span></label>
+                    </div>
+                    <div style="float:left;width:50%;">
+                        <input type="radio" id="sf64" name="sf6" value="偏软、偏粘"  checked/>
+                        <label for="sf64" style="width:auto"><span style="font-weight: normal;">偏软、偏粘</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width:100%;float:left;margin-top: 50px" onclick="goExampleCollect()" id="footer" >
+            <div style="width:94%;float:left;border-radius:10px;"
+                 class="shop-goods-add text-white bg-main text-center">下一步</div>
+            <div style="height: 90px;width: 100%"></div>
+        </div>
+
+    </div>
+
+
+
+    <!--    <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--        <h4 style="margin-top: 0%; margin-bottom: 0%;">检测人姓名</h4>-->
+    <!--        <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--            <input id="name" class="tl-price-input" type="text" value="" placeholder="请填写姓名"-->
+    <!--                   onfocus="setToTopfirst(this)" onblur="resume()" />-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!--    <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--        <h4 style="margin-top: 0%; margin-bottom: 0%;">检测人年龄</h4>-->
+    <!--        <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--            <input id="age" class="tl-price-input" type="number" value="" placeholder="请填写年龄"-->
+    <!--                   onfocus="setToTopfirst(this)" onblur="resume()" />-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!--    <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--        <h4 style="margin-top: 0%; margin-bottom: 0%;">检测人年龄</h4>-->
+    <!--        <div style="width:30%;height:auto;float:left;margin-top:3%;">-->
+    <!--            <input type="radio" id="sex0" name="checkboxsex" value="女" class="option-radio" />-->
+    <!--            <label for="sex0" style="width:auto;text-indent: 45px;"><span-->
+    <!--                    style="font-weight: normal;">女</span></label>-->
+    <!--        </div>-->
+    <!--        <div style="width:30%;height:auto;float:left;margin-top:3%;">-->
+    <!--            <input type="radio" id="sex1" name="checkboxsex" value="男" class="option-radio" />-->
+    <!--            <label for="sex1" style="width:auto;text-indent: 45px;"><span-->
+    <!--                    style="font-weight: normal;">男</span></label>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <!--    <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--        <h4 style="margin-top: 0%; margin-bottom: 0%;">联系电话</h4>-->
+    <!--        <div style="width:100%;height:auto;float:left;margin-top:3%;">-->
+    <!--            <input id="phone" class="tl-price-input" type="tel" value="" placeholder="请填写联系方式"-->
+    <!--                   onfocus="setToTopfirst(this)" />-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <div style="width:100%;height:auto;float:left;margin-top:3%;" id="vercode">-->
+    <!--        <div style="width:40%;height:auto;float:left;">-->
+    <!--            <input class="tl-price-input" type="tel" maxlength="4" placeholder="短信验证码" id="ybbm"-->
+    <!--                   onfocus="setToTopfirst(this)">-->
+    <!--        </div>-->
+    <!--        <div style="width:55%;height:auto;float:left;margin-left:5%;">-->
+    <!--            <button type="button" class="ant-btn ant-btn-red yanzhengma" style="float: right;">发送验证码</button>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+</div>
+
+
+
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/input.js"></script>
+<script type="text/javascript" src="../js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script>
+    var Request = new Object();
+    Request = GetRequest();
+    var open_id = Request["open_id"] == undefined ? "" : Request["open_id"];
+    var sample_id = Request["sample_id"] == undefined ? "" : Request["sample_id"];
+
+    $("#sample_id").html(sample_id);
+
+
+    getUserId();
+    function getUserId() {
+        $.ajax({
+            url: "../api/getUserId.hn?user_id=" + open_id,
+            type: "get",
+            async: false,
+            dataType: "json",
+            success: function (data) {
+                if (data.success && data.code == "200") {
+                    open_id = data.msg;
+                } else if (data.success && data.code == "199") {
+                    window.location = data.msg;
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+
+    // var aaa = 0;
+    // //聚焦时置顶
+    // function setToTopfirst(ele) {
+    //     aaa = $(ele).offset().top;
+    // }
+    // //失去焦点时恢复位置
+    // function resume() {
+    //     window.scrollTo(0, aaa);
+    // }
+
+    // 验证码
+    var times = 60;
+    function roof() {
+        if (times == 0) {
+            $('.yanzhengma').text('发送验证码(' + times + 's)');
+            $('.yanzhengma').prop('disabled', false);
+            $('.yanzhengma').text('发送验证码');
+            times = 60;
+            return
+        }
+        $('.yanzhengma').text('发送验证码(' + times + 's)');
+        times--;
+
+        setTimeout(roof, 1000);
+    }
+
+    function checkPhone() {
+
+        // var phone = document.getElementById('phone').val();
+        var phone = $("#phone").val()
+        console.log(phone)
+        if(!(/^1[1234567890]\d{9}$/.test(phone))){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    $('.yanzhengma').on('click', function () {
+        //验证手机号
+        var flag = checkPhone();
+        if (flag) {
+            $(this).prop('disabled', true);
+            roof();
+            var phoneformsg = document.getElementById('phone').value;
+            //发送验证码
+            $.ajax({
+                url: "../api/Verification.hn?phone=" + phoneformsg,
+                type: 'get',
+                dataType: "json",
+                success: function (data) {
+                    if (!data.success) {
+                        alert(data.msg);
+                    }
+                }
+            });
+        } else {
+            alert("手机号有误");
+        }
+    });
+
+
+    $("#sf24").click(function() {
+        if($("#sf24").is(':checked')){
+            // 清空其余选项
+            $("#sf21").removeAttr('checked')
+            $("#sf22").removeAttr('checked')
+            $("#sf23").removeAttr('checked')
+        }
+    });
+    $("#sf21").click(function() {
+        // 清空其余选项
+        $("#sf24").removeAttr('checked')
+    });
+    $("#sf22").click(function() {
+        // 清空其余选项
+        $("#sf24").removeAttr('checked')
+    });
+    $("#sf23").click(function() {
+        // 清空其余选项
+        $("#sf24").removeAttr('checked')
+    });
+
+
+    function nullCheck(val) {
+        // return true;
+        return val != null && val != '' && typeof val != 'undefined';
+    }
+
+    function goExampleCollect() {
+        var name = $("#name").val();
+        var phone = $("#phone").val();
+        var age = $("#age").val();
+        var sex = $("#sex").val();
+        var verCode = $("#ybbm").val();
+        var if_treatment = $('input:radio[name="sf1"]:checked').val();
+        var symptomList="";
+
+        var i = 0;
+        $("input[type='checkbox'][name='sf2']:checked").each(function(){
+            var tempval =  $(this).val()
+            if (i==0){
+                symptomList+=tempval;
+            }else{
+                symptomList+=tempval+";"
+            }
+
+            i++;
+        });
+
+        var infected = $('input:radio[name="sf3"]:checked').val();
+
+        var drink_milk = $('input:radio[name="sf4"]:checked').val();
+        var brush_teeth = $('input:radio[name="sf5"]:checked').val();
+        var diet_preference = $('input:radio[name="sf6"]:checked').val();
+
+
+
+        if (!nullCheck(sample_id)) {
+            $('#sample_id').focus();
+            document.querySelector('#sample_id').placeholder = '请输入样本编号';
+            return;
+        }
+        if (!nullCheck(name)) {
+            $('#name').focus();
+            document.querySelector('#name').placeholder = '请填写姓名';
+            return;
+        }
+
+        if (!nullCheck(age)) {
+            $('#age').focus();
+            document.querySelector('#age').placeholder = '请填写年龄';
+            return;
+        }
+        if (!nullCheck(sex)) {
+            alert("请填写性别");
+            return;
+        }
+
+        if (!nullCheck(phone)) {
+            $('#phone').focus();
+            document.querySelector('#phone').placeholder = '请填写手机号码';
+            return;
+        }
+        if (!nullCheck(verCode)) {
+            $('#ybbm').focus();
+            document.querySelector('#ybbm').placeholder = '请填写验证码';
+            return;
+        }
+
+        $.ajax({
+            url: "../api/sampleBind.hn",
+            data: {
+                "open_id": open_id,
+                "sample_id": sample_id,
+                "name": name,
+                "age": age,
+                "phone": phone,
+                "verCode": verCode,
+                "sex": sex,
+                "if_treatment":if_treatment,
+                "symptomList":symptomList,
+                "infected":infected,
+                "drink_milk":drink_milk,
+                "brush_teeth":brush_teeth,
+                "diet_preference":diet_preference
+            },
+            type: 'post',
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    var url = "./example_collect.html?open_id=" + open_id + "&sample_id=" + sample_id;
+                    window.location = url;
+                } else {
+                    var code = data.code;
+                    alert(data.msg);
+                    // code 100 无 101 验证码 102样本号
+                    if (code == "101") {
+                        $("#ybbm").focus();
+                    } else if (code == "102") {
+                        $("#sample_id").focus();
+                    }
+                }
+            }
+        });
+    }
+
+    // 页面加载完，执行扫一扫相关功能--------------------------------
+    $(document).ready(function () {
+        var currurl = decodeURIComponent(location.href.split('#')[0]);
+        //ajax注入权限验证
+        $.ajax({
+            type: 'POST',   //请求方式
+            url: "../api/JSSDKHELP.hn",
+            dataType: 'json',
+            data: { "url": currurl },
+            complete: function (XMLHttpRequest, textStatus) { },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                //alert("发生错误：" + errorThrown+"XMLHttpRequeststatus:"+XMLHttpRequest.status+"XMLHttpRequest.readyState:"+XMLHttpRequest.readyState+"textStatus:"+textStatus);
+            },
+            success: function (res) {
+                var appId = res.appId;
+                var nonceStr = res.nonceStr;
+                var jsapi_ticket = res.jsapi_ticket;
+                var timestamp = res.timestamp;
+                var signature = res.signature;
+                wx.config({
+                    debug: false, //开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: appId, //必填，公众号的唯一标识
+                    timestamp: timestamp, // 必填，生成签名的时间戳
+                    nonceStr: nonceStr, //必填，生成签名的随机串
+                    signature: signature, // 必填，签名，见附录1
+                    jsApiList: ['scanQRCode'] //必填，需要使用的JS接口列表，所有JS接口列表 见附录2
+                });
+
+
+                wx.ready(function () {
+                    document.querySelector('#scanQRCode1').onclick = function () {
+                        wx.scanQRCode({
+                            needResult: 1,
+                            desc: 'scanQRCode desc',
+                            success: function (res) {
+                                //扫码后获取结果参数赋值给Input
+                                var url = res.resultStr;
+                                //商品条形码，取","后面的
+                                if (url.indexOf(",") >= 0) {
+                                    var tempArray = url.split(',');
+                                    var barCode = tempArray[1];
+                                    $('#sample_id').value = barCode;
+                                    getSampleInfo();
+                                } else {
+                                    alert("请对准条形码扫码!");
+                                }
+                            }
+                        });
+                    };
+                });
+
+                wx.error(function (res) {
+                    alert("调用微信jsapi返回的状态:" + res.errMsg);
+                });
+            }
+        });
+    });
+    //-----------------------------------end
+
+</script>
+</body>
+
+</html>

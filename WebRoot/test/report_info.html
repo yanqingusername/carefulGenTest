@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>报告列表</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <style type="text/css">
+
+        .p1{
+            width: 90%;
+            margin: auto;
+            height: 80px;
+            background-color: #FFDDE3;
+            border-radius: 20px;
+            box-shadow: 2px 2px 10px #909090;
+        }
+        /* .p1{width:95%;margin:auto;border:1px dashed #E06596; border-radius:15px;} */
+        .p2{width:90%;height:80px;margin: auto;}
+        .p3{width:100%;height:20px;margin: auto;}
+        .p4{font-size: 14px;text-align:center;width:100%;margin: auto;color:#2B2B2B;}
+        .p5{font-size: 14px;text-align:center;width:50%;display:inline;float:left;}
+        .p11{
+            width: 90%;
+            height: 30px;
+            margin: auto;
+            color:#2B2B2B;
+            line-height: 30px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .p6{
+            font-size: 14px;
+            text-align:center;
+            width:100%;
+            margin: auto;
+            position: fixed;
+            right: 0;
+            left: 0;
+            z-index: 1030;/* 浮层高度 */
+            bottom: 0;
+            margin-bottom: 0;
+            color:#FFA2C7;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body style="background-color:#f5f6f7">
+<div id="content">
+</div>
+<input id='input1' type="text" value="复制链接【JQuery】" style="display: none">
+<script type="text/javascript">
+
+    /* 根据后台返回信息，动态加载到div中 */
+    function GetRequest() {
+        var url = window.location.search; //获取url中"?"符后的字串
+        //alert("url:"+url);
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    var open_id = "";
+    function run(){
+        showlist();
+    }
+    run();
+
+    function showlist(){
+        //终端类型判断
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        var isWeixin = !!/MicroMessenger/i.test(u);
+
+        var Request = new Object();
+        Request = GetRequest();
+        var phone= Request['phone'];
+        var acCode= Request['acCode'];
+        var verCode= Request['verCode'];
+        open_id = Request['open_id'];
+
+        console.log(phone);
+        console.log(acCode);
+        console.log(verCode);
+        $.ajax({
+            url : "../api/getSamplePhone.hn",
+            type : 'post',
+            data:{
+                phone:phone,
+            },
+            cache:false,
+            global:false,
+            dataType : "json",
+            success : function(data) {
+                //alert(data.root);
+                if(data.success){
+                    var html='';
+                    if(isAndroid){
+                        /*      	            $.each(data.msg,function(i,item){
+                                                 var h5Url = "http://wx.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                                    var h6Url = item.reportUrl;
+                                                    var name = item.testItem;
+                                                    var time = item.createTime;
+                                                html+='<br><div class="p1" onclick="window.open(\''+h5Url+'\')">'+
+                                                '<div class="p2">'+
+                                                '<div class="p11">'+name+'</div>'+
+                                                '<div class="p3">'+
+                                                '<div class="p4">'+time+'</div>'+
+                                                '<div class="p5" onclick="download(\''+h6Url+'\')">'+
+                                                '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;border-radius: 30px;">下载</div>'+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>'
+                                                 $("#content").html(html);
+                                            }) */
+                        $.each(data.msg,function(i,item){
+                            console.log(item)
+                            var report_url = item.reportUrl;
+                            var name = item.commodity_name;
+                            if(typeof(name) == "undefined"){
+                                name = '';
+                            }
+                            var time = item.reportTime;
+                            if(typeof(time) == "undefined"){
+                                time = '';
+                            }
+
+                            var sample_status = item.sample_status;
+                            //0未确认1已确认2正在检测3数据分析4已完成
+                            if(typeof(sample_status) == "undefined"){
+                                sample_status = '检测中';
+                            }else if(sample_status==0){
+                                sample_status = '实验室未收样';
+                            }else if(sample_status==1){
+                                sample_status = '实验室已收样';
+                            }else if(sample_status==2){
+                                sample_status = '正在检测';
+                            }else if(sample_status==3){
+                                sample_status = '数据分析';
+                            }else if(sample_status==4){
+                                sample_status = '已完成';
+                            }
+
+                            var h5Url ="";
+
+                            if(report_url==""||report_url==null){
+                                html+='<br><div class="p1">'+
+                                    '<div class="p2">'+
+                                    '<div class="p11">'+name+'</div>'+
+                                    '<div class="p3">'+
+                                    '<div class="p4">'+time+'</div>'+
+                                    '<div class="p5" style="float:none">'+
+                                    '<div style="width:40%;margin: auto;line-height: 26px;height:26px;border-radius: 5px;">'+sample_status+'</div>'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '</div>';
+                            }else{
+                                if(sample_status == '数据分析'){
+                                    html+='<br><div class="p1">'+
+                                        '<div class="p2">'+
+                                        '<div class="p11">'+name+'</div>'+
+                                        '<div class="p3">'+
+                                        '<div class="p4">'+time+'</div>'+
+                                        '<div class="p5" style="float:none">'+
+                                        '<div style="width:40%;margin: auto;line-height: 26px;height:26px;border-radius: 5px;">'+sample_status+'</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>';
+
+                                }else{
+
+                                    if(report_url.indexOf('cloud')!=-1){
+                                        h5Url = "http://cloud.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                    }else if(report_url.indexOf('cov')!=-1){
+                                        h5Url = "http://cov.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                    }else if(report_url.indexOf('report1')!=-1){
+                                        h5Url = "http://report1.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                    }else if(report_url.indexOf('report2')!=-1){
+                                        h5Url = "http://report2.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                    }else{
+                                        h5Url = "http://wx.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                    }
+                                    var h6Url = item.reportUrl;
+                                    var name = item.commodity_name;
+                                    var time = item.reportTime;
+                                    var sample_id = item.sample_id;
+                                    html+='<br><div class="p1" >'+
+                                        '<div class="p2">'+
+                                        '<div class="p11">'+name+'</div>'+
+                                        '<div class="p3">'+
+                                        '<div class="p4">'+time+'</div>'+
+                                        '<div class="p5" onclick="goPdf(\''+sample_id+'\')">'+
+                                        '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;line-height: 28px;height:28px;border-radius: 20px;color:#ffffff;">查看</div>'+
+                                        '</div>'+
+                                        '<div class="p5" id="'+i+'" onclick="goPdf(\''+sample_id+'\')">'+
+                                        '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;line-height: 28px;height:28px;border-radius: 20px;color:#ffffff;">下载</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>'
+                                }
+                            }
+
+
+                            $("#content").html(html);
+                        })
+                        //html+='<div class="p6">报告解读客服：010-53857781-8004</div>'
+                        $("#content").html(html);
+                    }else{
+                        /*                   $.each(data.msg,function(i,item){
+                                                 var h5Url = "http://wx.coyotebio-lab.com/PDF.js/web/viewer.html?file="+item.reportUrl;
+                                                    var h6Url = item.reportUrl;
+                                                    var name = item.testItem;
+                                                    var time = item.createTime;
+                                                html+='<br><div class="p1" onclick="window.open(\''+h5Url+'\')">'+
+                                                '<div class="p2">'+
+                                                '<div class="p11">'+name+'</div>'+
+                                                '<div class="p3">'+
+                                                '<div class="p4">'+time+'</div>'+
+                                                '<div class="p5" onclick="window.open(\''+h5Url+'\')">'+
+                                                '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;line-height: 28px;height:28px;border-radius: 20px;color:#ffffff;">查看</div>'+
+                                                '</div>'+
+                                                '<div class="p5" id="'+i+'" onclick="download(\''+h6Url+'\')">'+
+                                                '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;line-height: 28px;height:28px;border-radius: 20px;color:#ffffff;">下载</div>'+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>'+
+                                                '</div>'
+                                                 $("#content").html(html);
+                                            }) */
+
+
+                        $.each(data.msg,function(i,item){
+                            console.log(item)
+                            var h5Url = item.reportUrl;
+                            var name = item.commodity_name;
+
+                            if(typeof(name) == "undefined"){
+                                name = '';
+                            }
+
+                            var time = item.reportTime;
+                            if(typeof(time) == "undefined"){
+                                time = '';
+                            }
+
+                            var sample_status = item.sample_status;
+                            var sample_id = item.sample_id;
+
+                            //0未确认1已确认2正在检测3数据分析4已完成
+                            if(typeof(sample_status) == "undefined"){
+                                sample_status = '检测中';
+                            }else if(sample_status==0){
+                                sample_status = '实验室未收样';
+                            }else if(sample_status==1){
+                                sample_status = '实验室已收样';
+                            }else if(sample_status==2){
+                                sample_status = '正在检测';
+                            }else if(sample_status==3){
+                                sample_status = '数据分析中';
+                            }else if(sample_status==4){
+                                sample_status = '已完成';
+                            }
+
+
+                            if(h5Url==""||h5Url==null){
+                                html+='<br><div class="p1">'+
+                                    '<div class="p2">'+
+                                    '<div class="p11">'+name+'</div>'+
+                                    '<div class="p3">'+
+                                    '<div class="p4">'+time+'</div>'+
+                                    '<div class="p5" style="float:none">'+
+                                    '<div style="width:40%;margin: auto;line-height: 26px;height:26px;border-radius: 5px;">'+sample_status+'</div>'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '</div>'+
+                                    '</div>';
+                            }else{
+                                //******************************************
+                                if(sample_status == '数据分析'){
+                                    html+='<br><div class="p1">'+
+                                        '<div class="p2">'+
+                                        '<div class="p11">'+name+'</div>'+
+                                        '<div class="p3">'+
+                                        '<div class="p4">'+time+'</div>'+
+                                        '<div class="p5" style="float:none">'+
+                                        '<div style="width:40%;margin: auto;line-height: 26px;height:26px;border-radius: 5px;">'+sample_status+'</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>';
+
+                                }else{
+
+                                    html+='<br><div class="p1" >'+
+                                        '<div class="p2">'+
+                                        '<div class="p11">'+name+'</div>'+
+                                        '<div class="p3">'+
+                                        '<div class="p4">'+time+'</div>'+
+                                        '<div class="p5" onclick="goPdf(\''+sample_id+'\')">'+
+                                        '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;line-height: 28px;height:28px;border-radius: 20px;color:#ffffff;">查看</div>'+
+                                        '</div>'+
+                                        '<div class="p5" id="'+i+'" onclick="goPdf(\''+sample_id+'\')">'+
+                                        '<div style="width:50%;margin: auto;background-color: #FFA2C7 ;line-height: 28px;height:28px;border-radius: 20px;color:#ffffff;">下载</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>'+
+                                        '</div>';
+
+                                }
+
+
+
+
+
+                                //******************************************
+
+
+
+
+                            }
+
+                            $("#content").html(html);
+                        })
+                        //html+='<div class="p6">报告解读客服：010-53857781-8004</div>'
+                        $("#content").html(html);
+                    }
+                }else{
+                    alert(data.msg);
+                    function onBridgeReady() {
+                        parent.WeixinJSBridge.call('closeWindow');
+                    }
+                    if (typeof WeixinJSBridge == "undefined") {
+                        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                    } else {
+                        onBridgeReady();
+                    }
+                }
+            }
+        });
+    }
+    function  goPdf(sample_id) {
+        var url = "./mouth_luogan.html?sample_id=" + sample_id+"&open_id="+open_id;
+        window.location.href=url;
+    }
+    function weixinTip(ele){
+        var ua = navigator.userAgent;
+        var isWeixin = !!/MicroMessenger/i.test(ua);
+        ele.onclick=function(e){
+            window.event? window.event.returnValue = false : e.preventDefault();
+            document.getElementById('JweixinTip').style.display='block';
+        }
+        document.getElementById('JweixinTip').onclick=function(){
+            this.style.display='none';
+        }
+    }
+
+    function download(url){
+        var e = window.event;
+        stopBubble(e);
+        var ua = navigator.userAgent;
+        var isWeixin = !!/MicroMessenger/i.test(ua);
+        if(isWeixin){
+            alert("请点击右上角，选择在浏览器中打开。");
+        }else{
+            shareUrlJQ();
+            console.log("c");
+        }
+        /* window.open(url); */
+    }
+
+    function stopBubble(e){
+        //如果提供了事件对象，则这是一个非 ie 浏览器
+        if(e && e.stopPropagation){
+            e.stopPropagation();
+        }else{
+            window.event.cancelBubble = true;
+        }
+        return false;
+    }
+
+    function tanchu(url){
+        var e = window.event;
+        stopBubble(e);
+        var duan = "http://wx.coyotebio-lab.com/login.html";
+        alert("使用电脑登录："+duan+"，即可下载报告");
+    }
+    function  tanchu(sample_id) {
+        var url = "./mouth_luogan.html?sample_id=" + sample_id+"&open_id="+open_id;
+        window.location.href=url;
+
+    }
+
+    function shareUrlJQ(){
+        $('#input1').select();
+        document.execCommand("Copy");//执行浏览器复制命令
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>查看报告</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+    <script type="text/javascript" src="../PDF.js/build/pdf.js"></script>
+    <script type="text/javascript" src="../PDF.js/build/pdf.worker.js"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+</head>
+
+<body>
+<div id="img">
+
+</div>
+<img src="imgUrl" alt="" width="100%" height="auto">
+<button id="last">上一页</button><button id="next">下一页</button>
+</body>
+<script type="text/javascript">
+    var Request = new Object();
+    Request = GetRequest();
+    var sample_id = Request["sample_id"];
+    var open_id = Request["open_id"];
+    var count = 0;
+    getSampleList();
+    function getSampleList(){
+        debugger
+        $.ajax({
+            url : "../api/showPdf.hn",
+            type : 'POST',
+            data: {"open_id": open_id,"sample_id":sample_id},
+            dataType : "json",
+            success : function(data) {
+                if(data.success){
+                    count = data.count;
+                    var imgUrl = data.msg;
+                    var html = '<img src='+imgUrl+' alt="图片加载失败，请检查你的网络设置！" width="100%" height="auto">'
+                    $("#img").html(html)
+
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+</script>
+    </html>

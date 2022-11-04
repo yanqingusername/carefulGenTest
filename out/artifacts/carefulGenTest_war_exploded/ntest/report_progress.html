@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>检测报告详情</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+<meta name="msapplication-TileColor" content="#0e90d2">
+<script src="../js/jquery.js"></script>
+<link rel="stylesheet" href="../css/amazeui.min.css">
+<script src="../layui/layui.js" charset="utf-8"></script>
+<link rel="stylesheet" href="../layui/css/layui.css" />
+
+<style>
+html {
+	font-size: 10px;
+}
+
+html, body {
+	background-color: #F5F5F5;
+}
+
+body {
+	padding-bottom: 0;
+	margin: 0;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	width: 100%;
+	height: 49px;
+	background-color: #67C7BE;
+	color: #fff;
+}
+
+header .back {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: inline-block;
+	padding-left: 5px;
+	font-size: 30px;
+}
+
+header p {
+	margin: 0;
+	line-height: 49px;
+	font-size: 16px;
+	text-align: center;
+}
+
+.register {
+	padding: 8px 6px;
+	font-size: 14px;
+	margin-top: -46px;
+}
+
+.res-item {
+	position: relative;
+	width: 100%;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	background-color: #fff;
+}
+
+.res-icon {
+	position: absolute;
+	left: 8px;
+	top: 5px;
+	z-index: 100;
+	display: inline-block;
+	font-size: 18px;
+	color: #9c9c9c;
+}
+
+.res-item .input-item {
+	display: inline-block;
+	width: 100%;
+	padding-left: 31px;
+	height: 40px;
+	border: none;
+	font-size: inherit;
+}
+
+.res-item .input-item:focus {
+	outline-offset: 0;
+	outline: -webkit-focus-ring-color auto -2px;
+	background-color: #fefffe;
+	border: 1px solid #67C7BE;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 5px
+		rgba(226, 25, 69, .3);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 5px
+		rgba(226, 25, 69, 0.3);
+}
+
+.res-item .input-item:focus+.res-icon {
+	color: #67C7BE;
+}
+
+.yanzhengma {
+	position: absolute;
+	right: -10px;
+	top: 12px;
+	z-index: 100;
+	display: inline-block;
+	padding: 0.5rem 0.8rem;
+	font-size: 14px;
+	border: none;
+	background-color: transparent;
+	color: #67C7BE;
+	border-radius: 8px;
+}
+
+.yanzhengma:disabled {
+	color: #999999;
+}
+
+.res-btn {
+	margin-top: 10px;
+	padding: 0 5px;
+}
+
+.res-btn button {
+	background-color: #67C7BE;
+	font-size: 14px;
+	color: #fff;
+	border-radius: 8px;
+}
+
+.res-btn button:focus {
+	color: #fff;
+}
+
+fieldset {
+	-webkit-appearance: none;
+	width: 100%;
+	border: 1px soild #333;
+	margin: 0;
+	font-family: inherit;
+	font-size: 100%;
+	-moz-box-sizing: border-box;
+	box-size: border-box;
+	text-decoration: none;
+}
+
+.ui-input-text {
+	border-style: unset;
+	min-width: 60%;
+	-webkit-box-shadow: none;
+}
+
+.ui-focus {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.sampling_location_info {
+	border-radius: 20px;
+	margin-bottom: 80px;
+}
+
+.local_info {
+	margin: 2px 5px;
+	min-height: 30px;
+	align-items: center;
+	flex-wrap: wrap;
+	max-width: 100%;
+	word-break: break-all;
+	background-color: #F5F5F5;
+	display: flex;
+	padding: 5px;
+	border-radius: 10px;
+}
+
+.somthing {
+	/* position: relative;
+    margin: 0px auto 80px;
+    z-index: 100;
+    display: block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 9px;
+    background-color: #fff; */
+	margin: 0px auto 80px;
+}
+
+.record {
+	position: relative;
+	margin: 0px auto;
+	z-index: 100;
+	display: block;
+	padding: 0.2rem 0.8rem;
+	border-radius: 10px;
+	background-color: #FFFFFF;
+	width: 335px;
+	height: 215px;
+}
+
+.line {
+	width: 90%;
+	margin: auto;
+	border-bottom: solid 1px #e8e8e8;
+}
+
+.ui-icon-adds {
+	background: url(images/add_small.png) 15% 50% no-repeat;
+	background-size: 16px;
+}
+
+.ui-btn-icon-left:after {
+	background-color: transparent;
+}
+
+.somthing .item_name {
+	border: 0px;
+	border-radius: 10px;
+	width: 90%;
+	margin: 10px 0px;
+}
+
+div {
+	text-shadow: #fff 0px 0px 0px;
+}
+
+input {
+	text-shadow: #fff 0px 0px 0px;
+	border: 0;
+}
+
+.group {
+	font-size: 16px;
+	line-height: 50px;
+	display: flex;
+	align-items: center;
+	width: 90%;
+	margin: 0 auto;
+	position: relative;
+}
+
+.no_symbol {
+	outline: none;
+}
+
+.popupStyle {
+	display: none;
+	width: 160px;
+	background-color: rgb(85, 85, 85);
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 8px 8px;
+	position: fixed;
+	text-align: center;
+	z-index: 999;
+	top: 40%;
+	left: 50%;
+	margin-left: -80px;
+}
+
+.popupStyle::after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #555 transparent transparent transparent;
+}
+
+.circle {
+	background-color: #75CEC8;
+	border: 0px solid #75CEC8;
+	width: 26px;
+	height: 26px;
+	display: block;
+	border-radius: 100%;
+	text-align: center;
+	color: #fff;
+	padding: 5px;
+}
+</style>
+<body>
+	<div class="info_sample"
+		style="max-width:90%;min-height:19%;text-align: center;margin:auto;">
+		<ul style="padding: 20px 0px 0px;">
+			<span id="test_name"
+				style="font-size:16px;font-weight: 600;color: #333333;line-height: 22px;">test_name<br />报告进度
+			</span>
+			<br>
+			<div id="sample_id"
+				style="font-size:14px;font-weight: 600;color: #666666;line-height: 20px;margin:20px;">
+				样本编号：sampleid <a onclick="show_gui()" class="back_sample"
+					style="border: 0px solid transparent;background-color: transparent;margin: 0px 8px; color: #75CEC8;">查看采样指南</a>
+			</div>
+		</ul>
+	</div>
+	<div class="contract-operate_recodeMain"
+		style="border-radius: 6px;width:90%;min-height:70%;background-color:#FFFFFF;margin:auto;padding-top: 24px;">
+	</div>
+</body>
+<script>
+	$(function() {
+		var isPageHide = false;
+		window.addEventListener('pageshow', function() {
+			if (isPageHide) {
+				window.location.reload();
+			}
+		});
+		window.addEventListener('pagehide', function() {
+			isPageHide = true;
+		});
+	})
+
+	function GetRequest() {
+		var url = location.search; //获取url中"?"符后的字串
+		var theRequest = new Object();
+		if (url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			strs = str.split("&");
+			for (var i = 0; i < strs.length; i++) {
+				theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+			}
+		}
+		return theRequest;
+	}
+	var Request = new Object();
+	Request = GetRequest();
+	var valOpenid = Request['openid'];
+	var sample_id = Request['sample_id'];
+
+	//查看详情页面 id为获取的sample_id
+	read_deatil(sample_id);
+	var list = "";
+	var reportUrl = "";
+	var send_number = "";
+	function read_deatil(id) {
+		$.ajax({
+			url : "../apihealth/getSmapledetial.hn",
+			dataType : "json",
+			type : "get",
+			data : {
+				"sample_id" : id
+			},
+			success : function(data) {
+				if (data.success) {
+					
+					$("#test_name").html(data.result[0].commodity_name + "<br />报告进度");
+					
+					var sg = "show_gui()";
+					if (data.result[0].sample_status == 2 && data.result[0].send_number == "") {
+						sg = "show_guide()";
+					}
+					
+					$("#sample_id").html("样本编号：" + data.result[0].sample_id + "<a "
+						+ "onclick='" + sg + "' class='back_sample' "
+						+ "style='border: 0px solid transparent;background-color: transparent;margin: 0px 8px; color: #75CEC8;'>查看采样指南</a>");
+					reportUrl = data.result[0].reportUrl;
+					send_number = data.result[0].send_number;
+					console.log(data.result[0].sample_status)
+					if (data.result[0].sample_status == 2) { //第一阶段
+						list += '<ul class="contract-operate_recode_date" style="padding-left: 20px;">';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">1</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">绑定样本成功</span><br>';
+						list += '</div>';
+						list += '<span class="operate-des" ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						
+						if(data.result[0].send_number == ""){
+							list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">您的样本在 ';
+							list += data.result[0].create_time + ' 绑定成功，请尽快安排采样并通过顺丰快递回寄。 <a onclick="back_sample()"';
+							list += 'class="back_sample" ';
+							list += 'style="border:0px #FFFFFF solid;';
+							list += 'background-color: #FFFFFF;color:#75CEC8;font-size:12px;">回寄样本</a>';
+							list += '</span>';
+							list += '</div>';
+							list += '</li>';
+							list += '<li class="p-gjj" style="list-style-type:none;">';
+							list += '<div class="box">';
+							list += '<div class="icon" style="display:flex;">';
+							list += '<span class="circle" style="background-color:#CCCCCC">2</span> <span class="operate-date" ';
+							list += 'style="color:#999999;font-size:14px;font-weight: 600;padding-left:10px">回寄样本成功</span><br>';
+							list += '</div>';
+							list += '<span ';
+							list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+							list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">';
+						} else {
+							list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">您的样本在 ';
+							list += data.result[0].create_time + ' 绑定成功，并已预约顺丰快递上门取件。';
+							list += '</span>';
+							list += '</div>';
+							list += '</li>';
+							list += '<li class="p-gjj" style="list-style-type:none;">';
+							list += '<div class="box">';
+							list += '<div class="icon" style="display:flex;">';
+							list += '<span class="circle">2</span> <span class="operate-date" ';
+							list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">回寄样本成功</span><br>';
+							list += '</div>';
+							list += '<span ';
+							list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+							list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">您的样本在 ';
+							list += data.result[0].back_send_time + ' 成功寄出。 物流单号 ' + data.result[0].send_number + '。 <a onclick="show_track()"';
+							list += 'class="back_sample" ';
+							list += 'style="border:0px #FFFFFF solid;';
+							list += 'background-color: #FFFFFF;color:#75CEC8;font-size:12px;">查看物流详情</a>';
+						}
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle" style="background-color:#CCCCCC">3</span> <span class="operate-date" ';
+						list += 'style="color:#999999;font-size:14px;font-weight: 600;padding-left:10px">样本检测中</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle" style="background-color:#CCCCCC">4</span> <span class="operate-date" ';
+						list += 'style="color:#999999;font-size:14px;font-weight: 600;padding-left:10px">检测报告已出</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; color: #666666;">';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '</ul>';
+					} else if (data.result[0].sample_status == 3) { //第二阶段
+						list += '<ul class="contract-operate_recode_date" style="padding-left: 20px;">';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">1</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">绑定样本成功</span><br>';
+						list += '</div>';
+						list += '<span class="operate-des" ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">您的样本在 ';
+						list += data.result[0].create_time + ' 绑定成功。';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">2</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">回寄样本成功</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">您的样本在 ';
+						list += data.result[0].back_send_time + ' 成功寄出。 物流单号 ' + data.result[0].send_number + '。 <a onclick="show_track()"';
+						list += 'class="back_sample" ';
+						list += 'style="border:0px #FFFFFF solid;';
+						list += 'background-color: #FFFFFF;color:#75CEC8;font-size:12px;">查看物流详情</a>';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle" style="background-color:#CCCCCC">3</span> <span class="operate-date" ';
+						list += 'style="color:#999999;font-size:14px;font-weight: 600;padding-left:10px">样本检测中</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle" style="background-color:#CCCCCC">4</span> <span class="operate-date" ';
+						list += 'style="color:#999999;font-size:14px;font-weight: 600;padding-left:10px">检测报告已出</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; color: #666666;">';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '</ul>';
+					} else if (data.result[0].sample_status == 4) { //第三阶段
+						list += '<ul class="contract-operate_recode_date" style="padding-left: 20px;">';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">1</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">绑定样本成功</span><br>';
+						list += '</div>';
+						list += '<span class="operate-des" ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">您的样本在 ';
+						list += data.result[0].create_time + ' 绑定成功。 ';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">2</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">回寄样本成功</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">您的样本在 ';
+						list += data.result[0].back_send_time + ' 成功寄出。 物流单号 ' + data.result[0].send_number + '。 <a onclick="show_track()"';
+						list += 'class="back_sample" ';
+						list += 'style="border:0px #FFFFFF solid;';
+						list += 'background-color: #FFFFFF;color:#75CEC8;font-size:12px;">查看物流详情</a>';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">3</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">样本检测中</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #DDDDDD; color: #666666;">我们于';
+						list += data.result[0].receive_time + ' 收到您的回寄样本，检测结果预计将于 ' + data.result[0].estimate_time + ' 确认，请耐心等待。</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle" style="background-color:#CCCCCC">4</span> <span class="operate-date" ';
+						list += 'style="color:#999999;font-size:14px;font-weight: 600;padding-left:10px">检测报告已出</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; color: #666666;">';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '</ul>';
+					} else if (data.result[0].sample_status == 5) { //第四阶段
+						list += '<ul class="contract-operate_recode_date" style="padding-left: 20px;">';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">1</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">绑定样本成功</span><br>';
+						list += '</div>';
+						list += '<span class="operate-des" ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">您的样本在 ';
+						list += data.result[0].create_time + ' 绑定成功。';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">2</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">回寄样本成功</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">您的样本在 ';
+						list += data.result[0].back_send_time + ' 成功寄出。 物流单号 ' + data.result[0].send_number + '。 <a onclick="show_track()"';
+						list += 'class="back_sample" ';
+						list += 'style="border:0px #FFFFFF solid;';
+						list += 'background-color: #FFFFFF;color:#75CEC8;font-size:12px;">查看物流详情</a>';
+						list += '</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">3</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">样本检测中</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; border-left: 0.5px solid #75CEC8; color: #666666;">我们于';
+						list += data.result[0].receive_time + ' 收到您的回寄样本，检测结果预计将于 ' + data.result[0].estimate_time + ' 确认，请耐心等待。</span>';
+						list += '</div>';
+						list += '</li>';
+						list += '<li class="p-gjj" style="list-style-type:none;">';
+						list += '<div class="box">';
+						list += '<div class="icon" style="display:flex;">';
+						list += '<span class="circle">4</span> <span class="operate-date" ';
+						list += 'style="color:#75CEC8;font-size:14px;font-weight: 600;padding-left:10px">检测报告已出</span><br>';
+						list += '</div>';
+						list += '<span ';
+						list += 'style="font-size: 12px; width: 90%; height: 50px; padding-left: 22px; margin-left: 12px;';
+						list += 'display: block; color: #666666;">您的报告已出，快去看看吧。<a ';
+						list += 'onclick="show_report()" class="back_sample"';
+						list += 'style="border:0px #FFFFFF solid;';
+						list += 'background-color: #FFFFFF;color:#75CEC8;font-size:12px;">查看报告</a></span>';
+						list += '</div>';
+						list += '</li>';
+						list += '</ul>';
+					}
+					$('.contract-operate_recodeMain').append(list);
+				} else {
+					alert(data.msg);
+				}
+			}
+		})
+	}
+
+	function show_report() {
+		//终端类型判断
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+		var isiOS = u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+		var isWeixin = !!/MicroMessenger/i.test(u);
+		/* var h5Url;
+		if (reportUrl.indexOf('cloud') != -1) {
+			h5Url = "http://cloud.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		} else if (reportUrl.indexOf('cov') != -1) {
+			h5Url = "http://cov.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		} else if (reportUrl.indexOf('report1') != -1) {
+			h5Url = "http://report1.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		} else if (reportUrl.indexOf('report2') != -1) {
+			h5Url = "http://report2.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		} else if (reportUrl.indexOf('store') != -1) {
+			h5Url = "http://store.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		} else if (reportUrl.indexOf('syrdev') != -1) {
+			h5Url = "http://syrdev.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		} else {
+			h5Url = "http://wx.coyotebio-lab.com/PDF.js/web/viewer.html?file=" + reportUrl;
+		}
+		if (isAndroid) {
+			window.open(h5Url);
+		} else { */
+			window.open(reportUrl);
+		/* } */
+	}
+
+	function show_track() {
+		window.location = "./getSFTrack.html?phone=400-168-7220&order_serial=" + send_number;
+	}
+
+	function back_sample() {
+		window.location = "./SF_appointment.html?sample_id=" + sample_id + "&openid=" + valOpenid;
+	}
+
+	function show_guide() {
+		window.location = "./sampling_guide.html?sample_id="+sample_id+"&openid="+valOpenid;
+	}
+	
+	function show_gui() {
+		window.location = "./sampling_gui.html?sample_id="+sample_id+"&openid="+valOpenid;
+	}
+	
+	//alert 弹窗不显示域名
+		var wAlert = window.alert;
+		window.alert = function (message) {
+			try {
+				var iframe = document.createElement("IFRAME");
+				iframe.style.display = "none";
+				iframe.setAttribute("src", 'data:text/plain,');
+				document.documentElement.appendChild(iframe);
+				var alertFrame = window.frames[0];
+				var iwindow = alertFrame.window;
+				if (iwindow == undefined) {
+					iwindow = alertFrame.contentWindow;
+				}
+				iwindow.alert(message);
+				iframe.parentNode.removeChild(iframe);
+			}
+			catch (exc) {
+				return wAlert(message);
+			}
+		}
+		var wConfirm = window.confirm;
+		window.confirm = function (message) {
+			try {
+				var iframe = document.createElement("IFRAME");
+				iframe.style.display = "none";
+				iframe.setAttribute("src", 'data:text/plain,');
+				document.documentElement.appendChild(iframe);
+				var alertFrame = window.frames[0];
+				var iwindow = alertFrame.window;
+				if (iwindow == undefined) {
+					iwindow = alertFrame.contentWindow;
+				}
+				iwindow.confirm(message);
+				iframe.parentNode.removeChild(iframe);
+			}
+			catch (exc) {
+				return wConfirm(message);
+			}
+		}
+</script>
+</html>

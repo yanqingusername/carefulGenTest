@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+    </style>
+  </head>
+
+  <body>
+  <script type="text/javascript" src="../js/jquery.js"></script>
+  <script type="text/javascript" src="../js/common.js"></script>
+  <script>
+    var Request = new Object();
+	Request = GetRequest();
+	var open_id = Request["open_id"];
+    var phone = Request["phone"];
+
+    enterPage()
+
+	function enterPage(){
+		$.ajax({
+	        url: "../api/report.hn",
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+            data:{"phone":phone},
+	   		success: function(data){
+	   	    	if(data.success){
+	   	    		var status = data.status;
+	   	    		if(status == "0"){	// 无绑定记录
+
+                        alert("您暂时没有报告！")
+
+                        history.go(-1)
+		       		}else{
+                        window.location.href="。/report_info.html?phone="+phone+"&open_id="+open_id;
+
+		       		}
+
+
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    	}
+	   	    }
+		});
+	}
+  </script>
+  </body>
+</html>

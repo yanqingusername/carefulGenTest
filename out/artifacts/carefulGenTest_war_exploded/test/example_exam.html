@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>样本绑定</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<link rel="stylesheet" type="text/css" href="../css/exam.css">
+	<link rel="stylesheet" type="text/css" href="../css/pintuer.css" />
+	<link rel="stylesheet" type="text/css" href="../css/shop.css" />
+
+	<style type="text/css">
+		.btn {
+			font-size: 14px;
+			border: none;
+			background-color: #67C7BE;
+			color: #fff;
+			border-radius: 8px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div style="width:96%;height:auto;float:left;margin-left:2%;margin-top:10px;margin-bottom: 30px;">
+		<div style="width:100%;float:left;">
+			<img alt="" style="height:auto;width:100%;" src="./images/top.jpg">
+		</div>
+
+		<div style="width:100%;float:left;">
+			<div id="sampleInfo" style="margin-top:10px;width:99%"></div>
+		</div>
+	</div>
+	<div style="width:96%;float:left;height:65px;"></div>
+
+	<div style="width:96%;height:auto;float:left;margin-right:2%;">
+		<footer style="width:100%;margin-bottom:1%;" class="bg-white foot-height clearfix" onclick="bindSample()"
+			id="footer" style="z-index:10;">
+			<div style="width:100%;float:left">
+				<div style="width:94%;float:left;margin-left:3%;border-radius:10px;"
+					class="shop-goods-add text-white bg-main text-center">继续绑定</div>
+			</div>
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="../js/jquery.js"></script>
+	<script src="../js/input.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript">
+		var Request = new Object();
+		Request = GetRequest();
+		var open_id = Request["open_id"] == undefined ? "" : Request["open_id"];
+
+		getUserId();
+		function getUserId() {
+			$.ajax({
+				url: "../api/getUserId.hn?user_id=" + open_id,
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function (data) {
+					if (data.success && data.code == "200") {
+						open_id = data.msg;
+						getSampleList();
+					} else if (data.success && data.code == "199") {
+						window.location = data.msg;
+					} else {
+						alert(data.msg);
+					}
+				}
+			});
+		}
+
+		function getSampleList() {
+			$.ajax({
+				url: "../api/getSampleList.hn",
+				type: 'POST',
+				data: {
+					"open_id": open_id
+				},
+				dataType: "json",
+				success: function (data) {
+					if (data.success) {
+						setSampleInfo(data.msg);
+					} else {
+						alert(data.msg);
+					}
+				}
+			});
+		}
+
+		// 设置样本信息
+		function setSampleInfo(list) {
+			var html = "";
+
+			for (var i = 0; i < list.length; i++) {
+				var info = list[i];
+				var sample_id = info.sample_id;
+				var sampling_time = info.sampling_time;
+				var back_send_time = info.back_send_time;
+				var sample_status = Number(info.sample_status); // 2已绑定 （用户在公众号上进行了绑定）3已回寄（用户邮寄样本）   4已接收（实验室接收到用户邮寄的样本） 5已报告
+				var send_number = info.send_number;
+				var phone = info.phone;
+				var reportUrl = info.reportUrl;
+
+				if (sample_status < 2 || sample_status > 5) { // 状态有误，不展示
+					break;
+				}
+
+				// 样本信息
+				var sample_status_desc = "";
+				if (sample_status == 2) {
+					if (send_number == "") {
+						sample_status_desc = "已绑定";
+					} else {
+						sample_status_desc = "待回寄";
+					}
+				} else if (sample_status == 3) {
+					sample_status_desc = "已回寄";
+				} else if (sample_status == 4) {
+					sample_status_desc = "检测中";
+				} else if (sample_status == 5) {
+					sample_status_desc = "已报告";
+				}
+
+				var html_sample_info = '<div style="width: 100%; margin-top: 2%; text-align: right; float: left; color: #6dadb0; font-weight: bold; border-top: 3px solid #74CFC8;">'
+					+ '<div style="width:60%;float:left;text-align: center;">样本编号：<span>' + sample_id + '</span></div>'
+					+ '<div style="width:40%;float:right;color:#74CFC8;text-align:center;">' + sample_status_desc + '</div>'
+					+ '</div>';
+
+
+				// 绑定信息--肯定绑定和采集了
+				var html_sampling = '<div style="width:96%;margin-top:5%;margin-left:4%;float:left;">'
+					+ '<div style="width:100%;margin-top:1%;float:left;font-size:16px;color:#74CFC8;">样本绑定</div>'
+					+ '<div style="width:100%;margin-top:1%;float:left;font-size:14px;color:#A2A2A2;">已绑定'
+					+ '<span>' + sampling_time + '</span></div></div>'
+				var html_collect = '<div style="width:96%;margin-top:5%;margin-left:4%;float:left">'
+					+ '<div style="width:100%;margin-top:1%;float:left;font-size:16px;color:#74CFC8;">样本采集</div>'
+					+ '<div style="width:100%;margin-top:1%;float:left;font-size:14px;color:#A2A2A2;">参照使用说明书或样本采集说明书，完成自取样</div></div>'
+					+ '<div style="width:96%;margin-top:5%;margin-left:4%;float:left">'
+
+				// 样本回寄
+				var is_send = false; // 是否回寄
+				var send_info = "";
+				if (send_number == "") {
+					if (sample_status > 3) { // 实验室已收到，但是客户没有填写回寄单号
+						is_send = true;
+						send_info = "已回寄，请补全回寄单号";
+					} else {
+						send_info = "未回寄，请点击查看详情选择回寄方式";
+					}
+				} else {
+					if (sample_status == 2) {
+						send_info = "待回寄";
+					} else {
+						send_info = "已回寄";
+					}
+					is_send = true;
+				}
+
+				// 绑定--》绑定和采集 回寄--置灰 有个按钮 预约回寄
+				// 已回寄 --》 绑定和采集 回寄 有个按钮 查看物流详情
+				// 已接收 --》 绑定和采集 回寄 有个按钮 查看物流详情  样本检测
+				// 已报告 --》 绑定和采集 回寄 有个按钮 查看物流详情  样本检测 有个按钮 查看报告
+				var send_color = (is_send) ? "#74CFC8" : "";
+				var send_info_receive = "";
+				if (sample_status >= 4) {
+					send_info_receive = "已接收";
+				} else {
+					send_info_receive = send_info;
+				}
+
+				var html_send = '<div style="width:100%;margin-top:1%;float:left">'
+					+ '<div style="width:30%;float:left;font-size:16px;color:' + send_color + ';">样本回寄</div>'
+					+ '<button onclick= "geDetail(\'' + send_number + '\',\'' + phone + '\',\'' + sample_id + '\')" style="width:30%;margin-left:30%;float:left;" class="btn">查看详情</button></div>'
+					+ '<div style="text-align: center; padding: 0px 10px; margin-top: 1%; float: left; font-size: 14px; color: #74CFC8; background-color: #eaf2f1;color:' + send_color + ';">' + send_info_receive + '</div>'
+					+ '<div style="width:100%;margin-top:1%;float:left;font-size:14px;color:#A2A2A2;">样本采集完成后，在线预约顺丰上门取件，全程免费寄送</div></div>'
+					+ '<div style="width:96%;margin-top:5%;margin-left:4%;float:left">';
+
+				// 检测信息
+				var is_test = false; // 是否检测
+				if (sample_status > 3) {
+					is_test = true;
+				}
+				var test_color = (is_test) ? "#74CFC8" : "";
+				var report_show = (sample_status == 5) ? "display" : "none";
+
+				var html_test = '<div style="width:100%;margin-top:1%;float:left">'
+					+ '<div style="width:30%;float:left;font-size:16px;color:' + test_color + '">样本检测</div>'
+					+ '<button  style="width:30%;margin-left:30%;float:left;display:' + report_show + ';"' +
+					' onclick= "goPdf(\'' + sample_id + '\')" class="btn" >查看报告</button></a></div>'
+					+ '<div style="width:100%;float:left;font-size:14px;color:#A2A2A2;">实验检测，收到回寄样本后2个工作日内出具电子版检测报告</div></div>'
+
+				html += html_sample_info + html_sampling + html_collect + html_send + html_test;
+			}
+
+			$("#sampleInfo").html(html);
+		}
+
+		function bindSample() {
+			var myurl = "./example_first.html?open_id=" + open_id;
+			window.location.href = myurl;
+		}
+		function goPdf(sample_id) {
+			var url = "./mouth_luogan.html?sample_id=" + sample_id + "&open_id=" + open_id;
+			window.location.href = url;
+
+		}
+
+		//查看回寄物流信息
+		function geDetail(send_number, phone, sample_id) {
+			var sample_status = "";
+			$.ajax({
+				url: "../api/getSampleForExpress.hn",
+				type: "get",
+				async: false,
+				dataType: "json",
+				data: {
+					"sample_id": sample_id
+				},
+				success: function (data) {
+					if (data.success) {
+						var info = data.msg;
+						sample_status = info.sample_status;
+
+					} else {
+						alert(data.msg);
+					}
+				}
+			});
+
+			var myurl = "";
+			if (send_number == "") { // 说明没有填写物流单号，跳转到填写页面
+				myurl = "./example_send.html?sample_id=" + sample_id + "&open_id=" + open_id;
+				window.location.href = myurl;
+			} else { // 跳转到查询页面
+				var flag = false;
+				var address = "";
+				$.ajax({
+					url: "../api/selectSendNumber.hn",
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function (data) {
+						if (data.success) {
+							var info = data.msg;
+							for (var i = 0; i < info.length; i++) {
+								if (info[i].inside_code == send_number) {
+									flag = true;
+									address = info[i].inside_address;
+								}
+
+							}
+						} else {
+							alert(data.msg);
+						}
+					}
+				});
+				if (flag) {
+					if (sample_status == 3) {
+						alert("您的样本请自行送样至" + address + "!");
+					} else if (sample_status > 3) {
+						alert("您的样本已送至" + address + "!");
+					}
+
+				} else {
+					/*myurl =  "http://m.kuaidi100.com/index_all.html?type=shunfeng&postid=" + send_number;
+					window.location.href=myurl;*/
+					window.location.href = "./getSFTrack.html?order_serial=" + send_number + "&phone=" + phone;
+				}
+				//myurl = "./example_follow.html?send_number="+send_number+"&sample_id=" + sample_id + "&open_id=" + open_id;
+			}
+
+
+		}
+	</script>
+</body>
+
+</html>

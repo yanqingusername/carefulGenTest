@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+    http://www.springframework.org/schema/aop  
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd  
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context.xsd">  
+	<!-- 正式数据库 -->
+ 	<bean id="sysDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://39.104.176.251:3306/care_db?characterEncoding=utf-8"/>	
+	    <property name="username" value="db_duxie_care"/> 
+	    <property name="password" value="fshfdkhTYUI3243"/>  
+	    <property name="initialSize" value="1"/>
+	    <property name="maxActive" value="50"/>
+		<property name="maxIdle" value="2"/>
+		<property name="minIdle" value="1"/>
+	</bean> 
+	 
+	<!-- 测试数据库 -->
+   <!-- <bean id="sysDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://8.130.25.5:3306/care_db?characterEncoding=utf-8"/>	
+	    <property name="username" value="db_duxie_care"/> 
+	    <property name="password" value="fshfdkhTYUI3243"/>  
+	    <property name="initialSize" value="1"/>
+	    <property name="maxActive" value="50"/>
+		<property name="maxIdle" value="2"/>
+		<property name="minIdle" value="1"/>
+	</bean> -->
+	
+	<!-- 正式数据库(关联老版后台) -->
+	<!-- <bean id="healthDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+	    <property name="url" value="jdbc:mysql://39.104.91.77:3306/db_health100?characterEncoding=utf-8"/>	
+	   	<property name="username" value="db_duxie_health"/> 
+	    <property name="password" value="kno*!b@Q7pPy3nba"/> 
+	    <property name="initialSize" value="1"/>
+	    <property name="maxActive" value="50"/>
+		<property name="maxIdle" value="2"/>
+		<property name="minIdle" value="1"/>
+	</bean> -->
+	
+</beans>

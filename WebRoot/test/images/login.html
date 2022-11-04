@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no"> 
+    <title>卡尤迪医学检验实验室</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" href="../css/amazeui.min.css">
+
+    <style>
+        html { font-size: 10px; }
+        html,body { background-color: #f0eff4; }
+        body { padding-bottom: 0;margin: 0; padding-top: 49px;}
+        * { padding: 0;margin: 0; }
+        header {position: fixed;top: 0;left: 0;z-index: 999;width: 100%;height: 49px; background-color: #67C7BE; color: #fff;}
+        header .back { position: absolute;top: 0;left: 0; display: inline-block;padding-left: 5px; font-size: 30px; }
+        header p { margin: 0;line-height: 49px; font-size: 16px;text-align: center; }
+        .register { padding: 8px 6px; font-size: 14px;}
+        .res-item {position: relative;  width: 100%; border-radius: 4px; margin-bottom: 8px;background-color: #fff; }
+        .res-icon {position: absolute;left: 8px;top: 5px;z-index: 100; display: inline-block;font-size: 18px;color: #9c9c9c; }
+        .res-item .input-item {display: inline-block;width: 100%;padding-left: 31px;height: 40px;border: none; font-size: inherit;}
+        .res-item .input-item:focus { 
+            outline-offset: 0;
+            outline: -webkit-focus-ring-color auto -2px;
+            background-color: #fefffe;
+            border: 1px solid #67C7BE;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 5px rgba(226,25,69,.3);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 5px rgba(226,25,69,0.3);
+        }
+        .res-item .input-item:focus + .res-icon { color: #67C7BE; }
+        .yanzhengma {position: absolute;right: 10px;top: 5px; z-index: 100;  display: inline-block;padding: 0.5rem 0.8rem;font-size: 14px; border: none;background-color: #67C7BE;color: #fff;border-radius: 8px; }
+        .yanzhengma:disabled { background-color: #ddd; }
+        .res-btn { margin-top: 10px;padding: 0 5px; }
+        .res-btn button {  background-color: #67C7BE;font-size: 14px; color: #fff;border-radius: 8px; }
+        .res-btn button:focus { color: #fff; }
+        .headImage{}
+    </style>
+</head>
+<body>
+    <header>
+        <p>用户报告查询系统</p>
+    </header>
+    <img src="images/indexCompany.jpg" style="width:100%;height:auto;">
+    &nbsp;
+    <div style="font-size:10px;color:#67C7BE;">为了保护您的隐私安全，请输入样本编码或验证手机号查看报告</div>
+    &nbsp;
+    <div class="register">
+        <div class="res-item">
+            <input id="phone" type="tel" placeholder="手机号" class="input-item mobile">
+            <i class="res-icon am-icon-phone"></i>
+        </div>
+<!--         <div class="res-item" id="accode">
+            <input type="text" placeholder="样本编号" class="input-item password">
+            <i class="res-icon am-icon-mobile"></i>
+        </div> -->
+        <div class="res-item" id="vercode">
+            <input type="text" placeholder="样本编号" id="ybbm" class="input-item yanzheng">
+            <i class="res-icon am-icon-mobile"></i>
+            <button type="button" class="yanzhengma">发送验证码</button>
+        </div>
+        <div style="width: 95%;text-align: -webkit-right;">
+            <!-- <a href="javascript:;" style="font-size:13px" onclick="duanxin()" id="duanxin">忘记样本编号？使用短信验证码登录</a> -->
+            <a href="javascript:;" style="font-size:13px" id="duanxin">忘记样本编号？使用短信验证码登录</a>
+        </div>
+        <div class="res-btn">
+            <button type="button" id="res-btn" class="am-btn am-btn-block" style="width:50%;margin:auto;">登录</button>
+        </div>
+    </div>
+    &nbsp;
+    <p style="text-align:center;margin: auto;font-size: 12px;color:#67C7BE; ">输入样本编号或验证手机号即可查询报告哦~</p>
+     <script type="text/javascript">
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+       var theRequest = new Object();
+       if (url.indexOf("?") != -1) {
+          var str = url.substr(1);
+          strs = str.split("&");
+          for(var i = 0; i < strs.length; i ++) {
+             theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+          }
+       }
+       return theRequest;
+    	
+    }		
+    var open_id;
+    var Request = new Object();
+	Request = GetRequest();
+	
+	var val= Request['code'];
+	 	$.ajax({
+		   url: "../enterPage.hn",
+		   data: {
+		       "code":val
+		   },
+		   type: 'get',
+		   dataType: "json",
+		   success: function(data){
+		       //code无效
+		       if(!data.success&&"1000"==data.error_code){
+		       	   alert(data.error);
+		       	   return; 
+		       }
+		       //获取用户信息失败
+		       if(!data.success&&"1001"==data.error_code){
+		       	   alert(data.error);
+		       	   return; 
+		       }
+		       open_id=data.openid;
+		   }
+		 });      
+    </script>
+ 
+    <script>
+        var times = 60;
+        function roof(){
+            if(times == 0){
+                $('.yanzhengma').text('发送验证码('+times+'s)');
+                $('.yanzhengma').prop('disabled',false);
+                $('.yanzhengma').text('发送验证码');
+                times = 60;
+                return
+            }
+            $('.yanzhengma').text('发送验证码('+times+'s)');
+            times--;
+
+            setTimeout(roof,1000);
+        }
+        $('.yanzhengma').on('click',function(){
+            //先将样本编码变成验证码
+            $("#ybbm").attr('placeholder','验证码');
+            //验证手机号
+            var flag = checkPhone();
+             if(flag){
+                $(this).prop('disabled',true);
+                roof();
+                var phoneformsg = document.getElementById('phone').value;
+                //发送验证码
+                 $.ajax({
+	                url : "../Verification.hn?phone="+ phoneformsg,
+	                type : 'get',
+	                dataType : "json",
+	                success : function(data) {
+	                }
+                }); 
+            }else{
+                alert("手机号有误");
+            } 
+        });
+        function checkPhone(){
+            var phone = document.getElementById('phone').value;
+            if(!(/^1[34578]\d{9}$/.test(phone))){ 
+                return false; 
+            }else{
+                return true;
+            }
+        }
+        $('#res-btn').on('click',function(){
+            var mobile = $('.mobile').val();
+            //var acCode = $('.password').val();
+            var verCode = $('.yanzheng').val();
+            //var flag = checkPhone();
+            if(!mobile){
+                $('.mobile').focus();
+                document.querySelector('.mobile').placeholder = '请填写手机号码';
+                return;
+            }
+            //$(this).prop('disabled',true);
+            var text = $("#ybbm").attr('placeholder');
+            if(text=="验证码"){//这时是用验证码登录
+               $.ajax({
+	               url : "../VerificationPhone.hn",
+	               type : 'post',
+	               data:{
+	                   phone:mobile,
+	                   verCode:verCode
+	               },
+	               dataType : "json",
+	               success : function(data) {
+	                   if(data.success){
+	                       //登录成功
+                           alert("登录成功");
+	                   }else{
+	                       alert("您的报告还没有出来");
+	                   }
+	               }
+                });
+            }else{//这时是用样本编号登录
+	            $.ajax({
+		           url : "../login.hn",
+		           type : 'post',
+		           data:{
+		               phone:mobile,
+		               acCode:verCode
+		           },
+		           dataType : "json",
+		           success : function(data) {
+		           if(data.success){
+		           //登录成功
+		           alert("登录成功");
+		           }else{
+		           alert("您的报告还没有出来");
+		           }
+		           }
+	            }); 
+            }
+        })
+        
+        function duanxin(){
+            var text = $("#duanxin").html();
+            if(text=="使用手机号和样本编码登录"){
+                $("#duanxin").html("忘记样本编号？使用短信验证码登录");
+                $("#vercode").attr("style","display:none;");
+                $("#accode").attr("style","display:block;");
+            }else{
+                $("#duanxin").html("使用手机号和样本编码登录");
+                $("#vercode").attr("style","display:block;");
+                $("#accode").attr("style","display:none;");
+            }
+        }
+    </script>
+    
+
+</body>
+</html>

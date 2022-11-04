@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>process-example</title>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	width: 360px;
+	margin: 100px auto;
+}
+
+li {
+	position: relative;
+	padding: 0 21px;
+	list-style: none;
+	height: 54px;
+	border-left: 1px solid #4BACFD;
+}
+
+li:before {
+	content: "";
+	display: block;
+	position: absolute;
+	/* margin-left: -6px; */
+	top: 0;
+	left: -5px;
+	width: 10px;
+	height: 10px;
+	/* line-height: 22px; */
+	text-align: center;
+	background: #4BACFD;
+	/* color: #fff; */
+	/* font-size: 14px; */
+	border-radius: 50%;
+}
+
+.last_progress {
+	border: none;
+}
+
+.last_progress::before {
+	content: "●";
+	display: table-cell;
+	position: absolute;
+	vertical-align: middle;
+	/* margin-left: -6px; */
+	/* top: 0; */
+	left: -6px;
+	width: 14px;
+	height: 14px;
+	line-height: 11.5px;
+	text-align: center;
+	background: rgba(75, 172, 253, .3);
+	color: #4BACFD;
+	font-size: 18px;
+	border-radius: 50%;
+}
+
+.progress_content {
+	position: absolute;
+	top: -4px;
+}
+
+.progress_title {
+	font-size: 15px;
+	color: #222;
+	font-weight: 600;
+	margin-bottom: 3px;
+}
+
+.progress_time {
+	color: #999999;
+	font-size: 12px;
+}
+
+.active {
+	color: #2BA0FF;
+}
+</style>
+</head>
+
+<body>
+	<div class="process-status-new">
+		<ul class="progress_box">
+		</ul>
+	</div>
+</body>
+<script type="text/javascript">
+	var progressList = [
+		{
+			'progress_title' : '无感支付签约成功',
+			'progress_time' : '2020.06.10 09:00'
+		},
+		{
+			'progress_title' : '提额申请提交成功，银行审核中。',
+			'progress_time' : '2020.06.10 10:00'
+		},
+		{
+			'progress_title' : '提额审核通过，提额额度xxxx元。',
+			'progress_time' : '2020.06.10 10:05'
+		},
+		{
+			'progress_title' : '提额成功，当前可用额度为10000元',
+			'progress_time' : '2020.06.10 10:05'
+		}
+	]
+	function renderProgress(progressList) {
+		var progressBox = document.querySelector('.progress_box');
+		console.log(progressBox)
+		console.log(progressList);
+		var progressTemplate = ''
+		for (var i = 0; i < progressList.length; i++) {
+			if (i == progressList.length - 1) {
+				progressTemplate += "<li class='last_progress'><div class='progress_content'><p class='progress_title active'>" + progressList[i].progress_title + "</p><p class='progress_time'>" + progressList[i].progress_time + "</p> </div></li>"
+			} else {
+				progressTemplate += "<li><div class='progress_content'><p class='progress_title'>" + progressList[i].progress_title + "</p><p class='progress_time'>" + progressList[i].progress_time + "</p> </div></li>"
+			}
+		}
+		progressBox.innerHTML = progressTemplate
+	}
+	renderProgress(progressList)
+</script>
+</html>

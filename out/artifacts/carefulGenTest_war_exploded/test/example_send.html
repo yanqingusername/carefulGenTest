@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>样本回寄</title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" type="text/css" href="../css/exam.css">
+	<link rel="stylesheet" type="text/css" href="../css/pintuer.css" />
+    <link rel="stylesheet" type="text/css" href="../css/shop.css" />
+    <link rel="stylesheet" type="text/css" href="../css/card.css">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/alertMsg.js"></script>
+    <style type="text/css">
+       progress{
+          width: 100%;
+          height: 5px;
+          color:#f00;
+          background:#EFEFF4;
+          border-radius: 0.1rem;
+       }
+       progress::-webkit-progress-bar{
+          background-color: #f2f2f2;
+          border-radius: 0.2rem;
+       }
+       progress::-webkit-progress-value{
+          background: #74CFC8;
+          border-radius: 0.2rem;
+       }
+       
+       .p1{
+           width: 90%;
+           margin-left:5% ;
+           margin-bottom:25px;
+           height: 120px;
+           background-color: #E5F5F4;
+           border-radius: 10px;
+           box-shadow: 2px 2px 10px #909090;
+       }
+       
+       .p7{
+           width: 90%;
+           margin-left:5% ;
+           margin-bottom:25px;
+           height: 120px;
+           background-color: #E5F5F4;
+           border-radius: 10px;
+           /* box-shadow: 2px 2px 10px #909090; */
+           display: flex;
+           align-items: center;
+       }
+       .p2{width:90%;height:80px;margin: auto;display: flex;align-items: center;}
+
+       .p11{    
+           width: 90%;
+           height: 30px;
+           margin: auto;
+           color:#2B2B2B;
+           line-height: 30px;
+           text-align: center;
+           font-weight: bold;
+           font-size: 20px;
+       }
+       .content{
+           padding-bottom: 20px;
+           padding-top: 0px;
+       }
+    </style>
+
+  </head>
+  
+  <body style="background-color: #ffffff">
+   <div style="width:96%;height:auto;float:left;margin-left:2%;margin-top:10px">
+    <div style="width:100%;height:auto;float:left;">
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left">样本绑定</div>
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left;margin-left:6%;">样本采集</div>
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left;margin-left:6%;">样本回寄</div>
+       <div style="width:20%;font-size:15px;color:#A2A2A2;float:left;margin-left:6%;">样本检测</div>
+    </div>
+    <div style="width:100%;height:auto;float:left" class="content">
+      <progress value="65" max="100">
+      </progress>
+    </div>
+    
+    <div style="width:100%;font-size:18px;padding-left:30px">选择快递回寄方式</div>
+    <br>
+    <div class="p7" onclick="online()">
+        <img src="./images/yuyue.png" style="width:100%;">
+    </div>
+    <br>
+   <div class="p7" onclick="oneself()">
+       <img src="./images/huiji.png" style="width:100%;">
+   </div>
+    
+   </div>
+   
+   <script type="text/javascript" src="../js/common.js"></script>
+   <script>
+    var Request = new Object();
+	Request = GetRequest();
+	var open_id = Request["open_id"] == undefined ? "" : Request["open_id"];
+    var sample_id = Request["sample_id"] == undefined ? "" : Request["sample_id"];
+    
+    getUserId();
+	function getUserId(){
+		$.ajax({
+	        url: "../api/getUserId.hn?user_id=" + open_id,
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+	   		success: function(data){
+	   	    	if(data.success && data.code == "200"){
+	   	    		open_id = data.msg;
+	   	    	}else if(data.success && data.code == "199"){
+	   	    		window.location = data.msg;
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    	}
+	   	    }
+		});
+	}
+	
+    function online(){
+    	var myurl = "./example_send_online.html?open_id=" + open_id + "&sample_id=" + sample_id;
+        window.location.href=myurl;
+    }
+    //saveSendNumber
+    function oneself(){
+	    var send_number = "";
+	    var address = "";
+        $.ajax({
+            url: "../api/selectSendNumber.hn",
+            type: "get",
+            async: false,
+            dataType: "json",
+            success: function(data){
+                if(data.success ){
+                    //debugger
+                    send_number = data.msg[0].inside_code;
+                    address = data.msg[0].address_info;
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+
+        $.ajax({
+            url: "../api/saveSendNumber.hn",
+            type: "get",
+            async: false,
+            dataType: "json",
+            data:{"sample_id":sample_id,"send_number":send_number},
+            success: function(data){
+                if(data.success ){
+                    alert("请您务必将样本送至"+address);
+                    var url="./example_exam.html?open_id="+open_id;
+                    window.location = url;
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+
+    	// var myurl = "./example_send_oneself.html?open_id=" + open_id + "&sample_id=" + sample_id;
+    	// window.location.href=myurl;
+    }    
+   </script>
+  </body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>process-example</title>
+	<script src="../js/jquery.js"></script>
+	<script src="../dist/clipboard.min.js"></script>
+	<script src="../layui/layui.js" charset="utf-8"></script>
+	<link rel="stylesheet" href="../layui/css/layui.css" />
+	<script src="../js/jquery.js"></script>
+	<link rel="stylesheet" href="../css/amazeui.min.css">
+
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
+
+
+	<style>
+		/* reset.css */
+		body {
+			font-size: 12px !important;
+			font-family: 'Microsoft Yahei', 'proxima-nova', helvetica, arial;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		input {
+			-webkit-appearance: none;
+			resize: none;
+		}
+
+		body,
+		div,
+		ul,
+		li,
+		ol,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		input,
+		textarea,
+		select,
+		p,
+		dl,
+		dt,
+		dd,
+		a,
+		img,
+		button,
+		form,
+		table,
+		th,
+		tr,
+		td,
+		tbody,
+		article,
+		aside,
+		details,
+		figcaption,
+		figure,
+		footer,
+		header,
+		hgroup,
+		menu,
+		nav,
+		section {
+			-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+			padding: 0;
+			margin: 0;
+		}
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5 {
+			font-style: normal;
+			font-weight: normal;
+		}
+
+		img {
+			border: 0;
+			display: block;
+			border: 0;
+		}
+
+		.clearfix:after {
+			content: '';
+			display: block;
+			visibility: hidden;
+			height: 0;
+			clear: both;
+		}
+
+		.clearfix {
+			zoom: 1;
+		}
+
+		a {
+			text-decoration: none;
+			color: #969696;
+		}
+
+		a:hover {
+			color: #fed503;
+			text-decoration: none;
+		}
+
+		ul,
+		ol {
+			list-style: none;
+		}
+
+		a {
+			outline: none;
+		}
+
+		/* 去掉 input 右边上下箭头 */
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none !important;
+			margin: 0;
+		}
+
+		input:-webkit-autofill {
+			-webkit-box-shadow: 0 0 0px 1000px white inset !important;
+		}
+
+		/* 项目样式 */
+		.process-status-new {
+			width: 100%;
+			background-color: #fff;
+			height: 46px;
+			padding-top: 24px;
+		}
+
+		.process-status-new ul {
+			margin: 0 36px;
+			border-top: 1px solid #e5e5e5;
+			height: 45px;
+			position: relative;
+		}
+
+		.process-status-new ul li {
+			position: absolute;
+			float: left;
+			width: 33.3%;
+			top: -12px;
+		}
+
+		.process-status-new ul .p-gjj {
+			left: 0;
+		}
+
+		.process-status-new ul .p-basic {
+			left: 33.3%;
+		}
+
+		.process-status-new ul .p-edu {
+			left: 66.6%;
+		}
+
+		.process-status-new ul .p-ok {
+			left: 100%;
+		}
+
+		.process-status-new .p-n-2 .p-gjj span.l,
+		.process-status-new .p-n-3 .p-gjj span.l,
+		.process-status-new .p-n-4 .p-gjj span.l {
+			display: block;
+		}
+
+		.process-status-new ul li span.l {
+			position: absolute;
+			left: 0;
+			top: 11px;
+			width: 100%;
+			z-index: 1;
+			display: none;
+			height: 1px;
+			background-color: #439df8;
+		}
+
+		.process-status-new ul li .box {
+			width: 88px;
+			position: relative;
+			margin-left: -44px;
+			z-index: 2;
+		}
+
+		.process-status-new ul li .box .icon span {
+			width: 17px;
+			height: 17px;
+			border: 2px solid #e5e5e5;
+			display: block;
+			border-radius: 100%;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		.process-status-new .p-n-2 .p-gjj .icon span,
+		.process-status-new .p-n-3 .p-gjj .icon span,
+		.process-status-new .p-n-4 .p-gjj .icon span {
+			background-image:
+				url(http://r.51gjj.com/image/static/20160518-bank-icon-cur2.png);
+			background-size: 12px 12px;
+			background-color: #ffffff;
+			border: 2px solid #439df8;
+		}
+
+		.process-status-new ul li .box .icon {
+			width: 21px;
+			height: 21px;
+			padding: 1px;
+			background-color: #fff;
+			margin: 0 auto;
+		}
+
+		.process-status-new .p-n-2 .p-gjj p,
+		.process-status-new .p-n-3 .p-gjj p,
+		.process-status-new .p-n-4 .p-gjj p {
+			color: #439df8;
+		}
+
+		.process-status-new ul li .box p {
+			color: #b9b9b9;
+			font-size: 12px;
+			padding-top: 6px;
+			line-height: 18px;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="process-status-new">
+		<ul class="p-n-2">
+			<li class="p-gjj"><span class="l"></span>
+				<div class="box">
+					<div class="icon">
+						<span></span>
+					</div>
+					<p>步骤一</p>
+				</div>
+			</li>
+			<li class="p-basic"><span class="l"></span>
+				<div class="box">
+					<div class="icon">
+						<span></span>
+					</div>
+					<p>步骤二</p>
+				</div>
+			</li>
+			<li class="p-edu"><span class="l"></span>
+				<div class="box">
+					<div class="icon">
+						<span></span>
+					</div>
+					<p>步骤三</p>
+				</div>
+			</li>
+			<li class="p-ok">
+				<div class="box">
+					<div class="icon">
+						<span></span>
+					</div>
+					<p>步骤四</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<button onclick="showInfo()" style="width:100px;height:100px;background-color:black"></button>
+	<button
+		data-clipboard-text="收件人：卡尤迪大健康样本 电话：400-168-7220 公司名称：卡尤迪大健康样本 详细地址： 北京市昌平区科技园区生命园路8号院一区15号楼2层">复制</button>
+	<br>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<div id="previewFile" style="width:100px;height:100px;background-color:black">下载</div>
+	<div id="previewFile2" style="width:100px;height:100px;background-color:black" onclick="download()">下载2</div>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+	<form method="post" action="http://wx.coyotebio-lab.com/coyote/urc/download.hn" target="">
+		<input type="text" name="url" value="http://store.coyotebio-lab.com/data/excel2/20210610/10D021000008.pdf" />
+
+		<button type="submit">提交</button>
+	</form>
+
+	<br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<a href="../apihealth/download.hn?url=http://store.coyotebio-lab.com/data/excel2/20210610/10D021000008.pdf"
+		download="111.pdf" title="下载22222222222222222222">11111111111111111111</a>
+
+
+</body>
+<script>
+	layui.use(['layer'], function () {
+		var layer = layui.layer;
+	})
+	function showInfo() {
+		var content = "<div style='text-align: center;font-size: 16px;font-family: PingFangSC-Medium, PingFang SC;font-weight: 500;color: #333333;line-height: 22px;margin: 20px auto;'>自行回寄须知</div>"
+			+ "<div style='padding: 0px 20px;width: 235px;height: 260px;font-size: 14px;font-family: PingFangSC-Regular, PingFang SC;font-weight: 400;color: #333333;line-height: 20px;'>1. 回寄收件人信息<br>"
+			+ "收件人：卡尤迪大健康样本<br>"
+			+ "电话：400-168-7220<br>"
+			+ "公司名称：卡尤迪大健康样本<br>"
+			+ "详细地址： 北京市昌平区科技园区生命园路8号院一区15号楼2层<br>"
+			+ "2. 如果您的所在地不在顺丰的取件范围内，可以选择其他快递，邮费到付即可。<br>"
+			+ "3. 如遇快递员拒收，请联系电话 010-3838838</div>";
+		layer.open({
+			type: 1,
+			title: false, //不显示标题栏
+			closeBtn: true,
+			area: ['275px', '344px'],
+			shade: 0.8,
+			id: 'LAY_layuipro', //设定一个id，防止重复弹出
+			resize: false,
+			scrollbar: false,
+			btn: ['复制回寄收件地址'],
+			btnAlign: 'c',
+			moveType: 1, //拖拽模式，0或者1
+			content: content,
+			yes: function () {
+				const textCopied = ClipboardJS.copy("收件人：卡尤迪大健康样本 电话：400-168-7220 公司名称：卡尤迪大健康样本 详细地址： 北京市昌平区科技园区生命园路8号院一区15号楼2层");
+				//layer.closeAll();
+			}
+		});
+	}
+
+
+	function download() {
+		url = "http://store.coyotebio-lab.com/data/excel2/20210610/10D021000008.pdf";
+		/* window.location.href = url; */
+		/*     $.ajax({
+				url : "/universalReports/urc/download.hn",
+				type : 'post',
+				data:{
+					url:url
+				},
+				dataType : "json",
+				success : function(data) {
+				}
+			}); */
+		var form = $("<form>");//定义一个form表单
+		form.attr("style", "display:none");
+		form.attr("target", "");
+		form.attr("method", "post");//请求类型
+		form.attr("action", "http://wx.coyotebio-lab.com/coyote/urc/download.hn");//请求地址
+		$("body").append(form);//将表单放置在web中
+
+		var input1 = $("<input>");
+		input1.attr("type", "hidden");
+		input1.attr("name", "url");
+		input1.attr("value", url);
+		form.append(input1);
+
+		form.submit();//表单提交
+	}
+
+
+	$(document).ready(function () {
+		var currurl = location.href.split('#')[0];
+		//ajax注入权限验证
+		$.ajax({
+			type: 'POST', //请求方式
+			url: "../api/JSSDKHELP.hn",
+			dataType: 'json',
+			data: {
+				"url": currurl
+			},
+			complete: function (XMLHttpRequest, textStatus) { },
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				//alert("发生错误：" + errorThrown+"XMLHttpRequeststatus:"+XMLHttpRequest.status+"XMLHttpRequest.readyState:"+XMLHttpRequest.readyState+"textStatus:"+textStatus);
+			},
+			success: function (res) {
+				var appId = res.appId;
+				var nonceStr = res.nonceStr;
+				var jsapi_ticket = res.jsapi_ticket;
+				var timestamp = res.timestamp;
+				var signature = res.signature;
+				/*            alert("appid:"+appId+";nonceStr:"+nonceStr+";jsapi_ticket:"+jsapi_ticket+";timestamp:"+timestamp
+								+";signature"+signature);*/
+				//alert(currurl+"&apothecaryId="+user_id);
+				//alert("appId:"+appId +"------- " +"nonceStr:"+ nonceStr +" -----"+"jsapi_ticket:"+jsapi_ticket+"------ "+"timestamp:"+timestamp+"------- "+"signature:"+signature);
+				wx.config({
+					debug: false, //开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: appId, //必填，公众号的唯一标识
+					timestamp: timestamp, // 必填，生成签名的时间戳
+					nonceStr: nonceStr, //必填，生成签名的随机串
+					signature: signature, // 必填，签名，见附录1
+					jsApiList: ['previewFile', 'scanQRCode'] //必填，需要使用的JS接口列表，所有JS接口列表 见附录2
+				}); // end wx.config
+
+
+				wx.ready(function () {
+					console.log("wx.ready")
+					document.querySelector('#previewFile').onclick = function () {
+						console.log("下载开始")
+						wx.previewFile({
+							//wx.invoke('previewFile', {
+							url: 'http://store.coyotebio-lab.com/data/excel2/20210610/10D021000008.pdf', // 需要预览文件的地址(必填，可以使用相对路径)
+							name: '10D021000008.pdf', // 需要预览文件的文件名，必须有带文件格式的后缀，例如.doc(不填的话取url的最后部分，最后部分是个包含格式后缀的文件名)
+							size: 1029120 // 需要预览文件的字节大小(必填，而且大小必须正确，否则会打开失败)
+						}, function (res) { console.log(res) });
+					};
+				}); // end ready
+
+
+
+				wx.error(function (res) {
+					alert("调用微信jsapi返回的状态:" + res.errMsg);
+				});
+			} // end success
+		}); // end ajax
+
+	}); // end document
+</script>
+
+</html>

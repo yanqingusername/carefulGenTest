@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<title>卡尤迪医学检验实验室</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="Cache-Control" content="no-siteapp" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+	<meta name="msapplication-TileColor" content="#0e90d2">
+	<script src="./js/jquery.js"></script>
+	<link rel="stylesheet" href="./css/amazeui.min.css">
+
+	<!-- <script src="https://cdn.bootcdn.net/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script> -->
+	
+	<script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/html2canvas.js"></script>
+	<script type="text/javascript" src="../js/jsPdf.debug.js"></script>
+	<style>
+		html {
+			font-size: 10px;
+		}
+
+		* {
+			padding: 0;
+			margin: 0;
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		img {
+			pointer-events: none;
+			/*禁止none ，启用auto*/
+		}
+		.line{
+			margin-top:20px;
+			border: 0.5px solid #f4f0f0;
+		}
+	</style>
+</head>
+
+<body>
+	<div style="text-align: center;">
+		<button onclick="makeMpdf()" style="width: 100%; height: 40px; margin: auto;background-color:aliceblue;
+		border-radius: 10px;border: unset ">下载报告</button>
+	</div>
+	
+	<div id="pdfDom">
+
+		<img src="./pic/yiai/yiai1.png" style="width:100%;height:auto;">
+		<img src="./pic/yiai/info2x.jpg" style="width:100%;height:auto;">
+		<div
+			style="width:84.6%;margin:auto;height:auto;box-shadow: 0px 0px 10px #ECECEC;border-radius: 0 0px 10px 10px;text-align: center;">
+			<div style="font-size: 18px;color:#585858;margin-top:-4px;">
+				<div style="margin: auto;width: 80%;text-align: left;display: flex;">
+					<div style="width: 50%;">姓名：<span class="name">阮耕</span></div>
+					<div style="width: 50%;">年龄：<span class="age">28</span></div>
+				</div>
+				<br>
+				<div style="margin: auto;width: 80%;text-align: left;">电话号：<span class="phone">17664066791</span></div>
+				<br>
+				<div style="margin: auto;width: 80%;text-align: left;">样本编号：<span class="sample_id">TEST002220002</span></div>
+			</div>
+			<div class="line"></div>
+			<div class="lung_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">肺癌抑癌能力
+				<span class="lung_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="lung_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div>
+					<div class="lung_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+					<div class="lung_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="stomach_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">胃癌抑癌能力
+				<span class="stomach_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="stomach_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="stomach_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="stomach_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="esophageal_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">食管癌抑癌能力
+				<span class="esophageal_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="esophageal_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="esophageal_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="esophageal_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="Colorectal_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">结直肠癌抑癌能力
+				<span class="Colorectal_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="Colorectal_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="Colorectal_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="Colorectal_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="liver_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">肝癌抑癌能力
+				<span class="liver_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="liver_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="liver_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="liver_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="carcinoma_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">子宫内膜癌抑癌能力
+				<span class="carcinoma_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="carcinoma_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="carcinoma_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="carcinoma_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="thyroid_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">甲状腺癌抑癌能力
+				<span class="thyroid_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="thyroid_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="thyroid_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="thyroid_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="oophoroma_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">卵巢癌抑癌能力
+				<span class="oophoroma_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="oophoroma_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="oophoroma_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="oophoroma_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			<div class="line"></div>
+			<div class="mammary_cancer" style="margin-top: 20px;text-align: center;">
+				<div style="font-size: 18px;width: 80%;text-align: left;margin: auto;">乳腺癌抑癌能力
+				<span class="lung_cancer_res" style="background-color: #40E0D0;font-size: 18px;width: 2%;">一般</span></div>
+				<br>
+				<div id="mammary_cancer" style="display: flex;text-align: center;">
+					<span style="margin-left: 8%;margin-top: -3px;">59</span>&nbsp;
+					<div style="width:70%;height:10px;background: linear-gradient(to right,#FF69B4,	#87CEFA,#BBFFFF	);
+					border-radius: 50px;"></div>&nbsp;
+					<span style="margin-top: -3px;">120</span>
+					
+				</div>
+				<div></div>
+				<div class="mammary_cancer_sum" style="width: 70%;text-align: left;margin: auto;padding-left: 61%"><img src="./pic/yiai/triangle.png" style="width: 15px;height: 15px;" ></div>
+				<div class="mammary_cancer_sum" style="color: red;width: 70%;text-align: left;margin: auto;padding-left: 61%">74</div>
+			</div>
+			
+		</div>
+		<br><br>
+		<div style="width:84.6%;margin:auto;height:auto;font-size: 16px;font-family: 'ArialMT', 'Arial', sans-serif;color: #999999;">
+			<span style="color: red;">*</span>综合抑癌值大于100为抑癌能力强；综合抑癌值在85-100之间为抑癌能力正常；
+			综合抑癌值在60-85之间为抑癌能力一般；综合抑癌值小于60为抑癌能力弱。
+		</div>
+		
+		<img src="" id="FTO_result" style="width:100%;height:auto;margin:auto;">
+		<img src="" id="PPARG_result" style="width:100%;height:auto;margin:auto;">
+		<img src="" id="MTHFR_result" style="width:100%;height:auto;margin:auto;">
+		
+		<img src="./pic/yiai/yiai4.png" style="width:100%;height:auto;margin:auto;">
+		<img src="./pic/yiai/yiai5.png" style="width:100%;height:auto;margin:auto;">
+	</div>
+
+	<!-- <div><a  href="./pic/yiai/info2.png" download="downImg2">下载222</a></div>
+	<div><a class="down2" href="" download="downImg">下载2</a></div> -->
+
+	<!-- <br><br><br><br> -->
+	<script>
+		javascript: void (document.body.oncopy = null)
+		javascript: void (document.body.onpaste = null)
+		var sample_id="100000000000";
+		var phone = "17864239212";
+		getResult();
+		function getResult() {
+			console.log('芜湖！');
+			
+			//jpg为单进度条，png为检测结果分析
+
+			 $.ajax({
+				url : "../apihealth/getSample_result.hn",
+				type : 'post',
+				data : {
+					phone : phone,
+					sample_id : sample_id
+				},
+				dataType : "json",
+				success : function(data) {
+					if (data.success) {
+						var result = data.result;
+						$('.name').html(result.name);
+						$('.age').html(result.age);
+						$('.phone').html(result.phone);
+						$('.sample_id').html(result.sample_id);
+						
+						console.log(result);
+						//检测位点
+						var snpname = result.snpname;
+						//检测结果
+						var snpResult = result.snpResult;
+						//肥胖遗传风险结果
+						if(snpname.split(";")[0]=="FTO"){
+							var FTOres = snpResult.split(";")[0];
+						}
+						if(snpname.split(";")[1]=="FTO"){
+							var FTOres = snpResult.split(";")[1];
+						}
+						if(snpname.split(";")[2]=="FTO"){
+							var FTOres = snpResult.split(";")[2];
+						}
+						//脂质型肥胖风险
+						if(snpname.split(";")[0]=="PPARG"){
+							var PPARGres = snpResult.split(";")[0];
+						}
+						if(snpname.split(";")[1]=="PPARG"){
+							var PPARGres = snpResult.split(";")[1];
+						}
+						if(snpname.split(";")[2]=="PPARG"){
+							var PPARGres = snpResult.split(";")[2];
+						}
+						//腹型肥胖风险
+						if(snpname.split(";")[0]=="MTHFR"){
+							var MTHFRres = snpResult.split(";")[0];
+						}
+						if(snpname.split(";")[1]=="MTHFR"){
+							var MTHFRres = snpResult.split(";")[1];
+						}
+						if(snpname.split(";")[2]=="MTHFR"){
+							var MTHFRres = snpResult.split(";")[2];
+						}
+						$("#FTO").attr("src", "./pic/yiai/FTO" + FTOres + ".jpg");
+						$("#PPARG").attr("src", "./pic/yiai/PPARG" + PPARGres + ".jpg");
+						$("#MTHFR").attr("src", "./pic/yiai/MTHFR" + MTHFRres + ".jpg");
+			
+						$("#FTO_result").attr("src", "./pic/yiai/FTO" + FTOres +  ".png");
+						$("#PPARG_result").attr("src", "./pic/yiai/PPARG" + PPARGres + ".png");
+						$("#MTHFR_result").attr("src", "./pic/yiai/MTHFR" + MTHFRres +  ".png");
+					} else {
+						alert(data.msg);
+					}
+				}
+			}); 
+		}
+
+		//直接选择要截图的dom，就能截图，但是因为canvas的原因，生成的图片模糊
+		//html2canvas(document.querySelector('div')).then(function(canvas) {
+		//    document.body.appendChild(canvas);
+		//});
+		//创建一个新的canvas
+		/* $(function () {
+		window.pageYoffset = 0;
+		document.documentElement.scrollTop = 0;
+		document.body.scrollTop = 0;
+		var canvas2 = document.createElement("canvas");
+		let _canvas = document.querySelector('body');
+		var w = parseInt(window.getComputedStyle(_canvas).width);
+		var h = parseInt(window.getComputedStyle(_canvas).height);
+		//将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+		canvas2.width = w * 2;
+		canvas2.height = h * 2;
+		canvas2.style.width = w + "px";
+		canvas2.style.height = h + "px";
+		//可以按照自己的需求，对context的参数修改,translate指的是偏移量
+		//  var context = canvas.getContext("2d");
+		//  context.translate(0,0);
+		var context = canvas2.getContext("2d");
+		context.scale(2, 2);
+		html2canvas(document.querySelector('#demo'), { canvas: canvas2 }).then(function(canvas) {
+			//document.body.appendChild(canvas);
+			//canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+			document.querySelector(".down2").setAttribute('href', canvas.toDataURL());
+		});
+		}) */
+
+		//var downPdf = document.getElementById("demo");
+	function makeMpdf1() {
+			html2canvas(document.body, {
+				onrendered: function (canvas) {
+
+					var contentWidth = canvas.width;
+					var contentHeight = canvas.height;
+
+					//一页pdf显示html页面生成的canvas高度;
+					var pageHeight = contentWidth / 592.28 * 841.89;
+					//未生成pdf的html页面高度
+					var leftHeight = contentHeight;
+					//pdf页面偏移
+					var position = 0;
+					//a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+					var imgWidth = 595.28;
+					var imgHeight = 592.28 / contentWidth * contentHeight;
+
+					var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+					var pdf = new jsPDF('', 'pt', 'a4');
+
+					//有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+					//当内容未超过pdf一页显示的范围，无需分页
+					if (leftHeight < pageHeight) {
+						pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+					} else {
+						while (leftHeight > 0) {
+							pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+							leftHeight -= pageHeight;
+							position -= 841.89;
+							//避免添加空白页
+							if (leftHeight > 0) {
+								pdf.addPage();
+							}
+						}
+					}
+
+					pdf.save('content.pdf');
+				}
+			})
+		}
+		
+		function makeMpdf(){
+			// 在ios手机上会导致 上方空白 后边内容丢失  在电脑浏览器上的ios并不会
+			  const u = navigator.userAgent
+			  const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
+			  const isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+			html2canvas(document.getElementById("pdfDom"), {
+			  dpi: 200,
+			  allowTaint: true,
+			  y: isIOS ? 200 : 0,
+			  onrendered:function(canvas) {
+			  
+				  var contentWidth = canvas.width;
+				  var contentHeight = canvas.height;
+				  
+				  //一页pdf显示html页面生成的canvas高度;
+				  var pageHeight = contentWidth / 592.28 * 841.89;
+				  //未生成pdf的html页面高度
+				  var leftHeight = contentHeight;
+				  //页面偏移
+				  var position = 0;
+				  //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+				  var imgWidth = 595.28;
+				  var imgHeight = 592.28/contentWidth * contentHeight;
+
+				  var pageData = canvas.toDataURL('image/jpeg', 1.0);
+				  console.log(pageData);
+				  if(isIOS){
+					
+					console.log(pageData);
+				  }
+
+				  var pdf = new jsPDF('', 'pt', 'a4');
+
+				  //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+				  //当内容未超过pdf一页显示的范围，无需分页
+				  if (leftHeight < pageHeight) {
+				  pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+				  } else {
+					  while(leftHeight > 0) {
+						  pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+						  leftHeight -= pageHeight;
+						  position -= 841.89;
+						  //避免添加空白页
+						  if(leftHeight > 0) {
+							pdf.addPage();
+						  }
+					  }
+				  }
+
+				  pdf.save('content.pdf');
+			  },
+			   background: "#fff"
+			})
+		
+		}
+
+		function pdfComprovativo(arg) {
+			var doc = new jsPDF();
+			doc.text(20, 20, 'Hello world！');
+			doc.save('Test.pdf');
+			doc.output('dataurl')
+		}
+
+		
+	</script>
+</body>
+
+</html>

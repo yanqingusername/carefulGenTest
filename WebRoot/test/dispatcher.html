@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <style type="text/css">
+    </style>
+  </head>
+  
+  <body>
+  <script type="text/javascript" src="../js/jquery.js"></script>
+  <script type="text/javascript" src="../js/common.js"></script>
+  <script> 
+    var Request = new Object();
+	Request = GetRequest();
+	var code = Request["code"];
+	enterPage(code);
+
+	function enterPage(code){
+		$.ajax({
+	        url: "../api/enterPage.hn?code="+code,
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+	   		success: function(data){
+	   	    	if(data.success){
+	   	    		var openid = data.openid;
+	   	    		var status = data.status;
+	   	    		var url = "";
+	   	    		if(status == "0"){	// 无绑定记录，跳转到绑定页面
+		           		url="./example_first.html?open_id="+openid;
+		       		}else if(status == "1"){ // 绑定记录页面
+		       			url="./example_exam.html?open_id="+openid;
+		       		}else{
+		       			alert("状态有误，请联系客服！");
+		       		}
+		       		
+		       		window.location.href=url;
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    	}
+	   	    }
+		});
+	}     
+  </script>
+  </body>
+</html>

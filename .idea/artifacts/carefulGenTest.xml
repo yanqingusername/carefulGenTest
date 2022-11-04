@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="carefulGenTest">
+    <output-path>$PROJECT_DIR$/out/artifacts/carefulGenTest</output-path>
+    <root id="archive" name="carefulGenTest.war">
+      <element id="dir-copy" path="$PROJECT_DIR$/WebRoot" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="carefulGenTest" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

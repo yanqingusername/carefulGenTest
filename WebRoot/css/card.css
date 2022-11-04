@@ -1,0 +1,295 @@
+html,body,div,input,span,a,ul,li,select,img{margin:0; padding: 0;}
+html{
+	font-size: 14px !important;
+	max-height: 9999px;
+}
+a{
+	text-decoration: none;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-tap-highlight-color:rgba(0,0,0,0);
+    -moz-touch-callout: none;
+    -moz-user-select: none;
+    tap-highlight-color:rgba(0,0,0,0);
+    touch-callout: none;
+    user-select: none;
+}
+ul{
+	list-style: none;
+}
+body{
+	background-color:#f2f5f5; 
+}
+#wrap{
+	width:100%;
+}
+#wrap{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-flow:column;flex-flow:column;}
+/*#main{overflow-y:auto;-webkit-box-flex:1;-webkit-flex:1;flex:1;-webkit-overflow-scrolling: touch;}*/
+#main{
+	width:100%;
+	position:relative;
+}
+.box1{-webkit-box-flex:1;-moz-box-flex:1;box-flex:1}
+footer{
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 9;
+	margin-top:50px;
+}
+.foot,.foot1{
+	height:50px;
+	line-height: 50px;
+	background-color:#75cec7;
+	border-top: 1px solid #fefefe;
+	text-align: center;
+	color:#fefefe;
+}
+.foot:hover,.x6-r:hover{
+	background-color: #5cbbb4;
+}
+.x6{
+	width: 50%;
+	float: left;
+}
+.x6-l{
+	color:#75cec7;
+	background-color: #fff;
+}
+
+.content{
+	width:100%;
+	padding-bottom: 60px;
+	padding-top:20px;
+}
+.warning{
+	color:#ec1414 !important;
+}
+
+
+.clear>img{
+	width: 20px;
+	height: 20px;
+}
+
+.cur{
+	background: url("../image/choose.png") 0 12px no-repeat !important;
+	background-size: 15px 15px !important;
+}
+
+.head{
+	width:80%;
+	margin:0 auto;
+	margin-top: 10px;
+}
+.head>img{
+	width:100%;
+}
+.start{
+	width: 100%;
+	margin-top: 10px;
+}
+.start>span{
+	display: block;
+	width:60%;
+	height: 40px;
+	line-height: 40px;
+	margin:0 auto;
+	font-size: 1.2rem;
+	border: 1px solid #62afa9;
+	border-radius: 20px;
+	text-align: center;
+	color: #fff;
+	background-color: #70c5be;
+}
+
+.user_info{
+	width:80%;
+	position: relative;
+	margin:0 auto;
+}
+
+.user_info>span{
+	display:block;
+	width:100%;
+	line-height: 40px;
+	color:#999999;
+}
+
+.user_info>input{
+	display: block;
+	width:100%;
+	box-sizing: border-box;
+    -webkit-box-sizing: border-box;  
+    -moz-box-sizing: border-box; 
+	height: 40px;
+	margin: 0 auto;
+	padding-left:12px;
+	border: 1px solid #BFBFBF;
+	border-radius: 5px;
+	color:#333333;
+}
+
+.user_info>.clear{
+	display: none;
+	position: absolute;
+	top:50px;
+	right:2%;
+}
+
+.options{
+	width:100%;
+	box-sizing: border-box;
+    -webkit-box-sizing: border-box;  
+    -moz-box-sizing: border-box; 
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color:#ffffff;
+	margin:0px auto;
+	border: 1px solid #BFBFBF;
+	border-radius: 5px;
+}
+.options>li{
+	min-width: 30%;
+	max-height: 99px;
+	display: inline-block;
+	line-height: 40px;
+	background: url("../image/default.png") 0 12px no-repeat;
+	background-size: 15px 15px;
+	padding-left:15px;
+	box-sizing: border-box;
+    -webkit-box-sizing: border-box;  
+    -moz-box-sizing: border-box; 
+	color:#8f8f8f;
+	font-size: 13px;
+}
+#result{
+	background-color: #75cec7;
+}
+.result-image{
+	width:80px;
+	height: 80px;
+	margin:0 auto;
+	margin-top:50px;
+	margin-bottom:25px;
+}
+.result-image>img{width:100%;}
+.result>span{
+	display: block;
+	width: 100%;
+	line-height: 40px;
+	text-align: center;
+	color:#ffffff;
+}
+.result>img{
+	display: block;
+	width:187px;
+	height: 187px;
+	margin:0 auto;
+	margin-top:20px;
+}
+.present{
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.present>span{
+	display: block;
+	width:60%;
+	height: 40px;
+	line-height: 40px;
+	margin:0 auto;
+	font-size: 1.2rem;
+	border: 1px solid #ffffff;
+	border-radius: 20px;
+	text-align: center;
+	color: #fff;
+}
+.present>span:hover{
+	background-color: #ffffff;
+	color: #75cec7;
+}
+
+.selector  {
+  	/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+  	/*border: solid 1px #000;*/
+
+  	/*很关键：将默认的select选择框样式清除*/
+  	appearance:none;
+  	-moz-appearance:none;
+  	-webkit-appearance:none;
+  	width:80%;
+  	position: absolute;
+  	left:0;
+  	height: 32px;
+  	display:inline-block;
+  	overflow:hidden;
+	opacity: 0;
+}
+
+.birthday,.address,.weight,.height{
+	min-width:30%;
+	display: inline-block;
+	position: relative;
+}
+.birthday>span,.address>span,.weight>span,.height>span{
+	width:80%;
+	display: inline-block;
+	color:#666666;
+	border: 1px solid #BFBFBF;
+  	border-radius: 5px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #fff;
+}
+
+.collect_time,.sample_receipt_time {
+	min-width:22%;
+	display: inline-block;
+	position: relative;
+}
+.collect_time>span,.sample_receipt_time>span{
+	width:80%;
+	display: inline-block;
+	color:#666666;
+	border: 1px solid #BFBFBF;
+  	border-radius: 5px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #fff;
+}
+
+.class_time {
+	min-width:30%;
+	display: inline-block;
+	position: relative;
+}
+.class_time>span{
+	width:80%;
+	display: inline-block;
+	color:#666666;
+	border: 1px solid #BFBFBF;
+  	border-radius: 5px;
+	text-align: center;
+	line-height: 30px;
+	background-color: #fff;
+}
+
+.second-option{
+	width:100% !important;
+}
+.info_title{
+	font-size:larger;
+	border-radius:5px;
+	background-color: #75cec7;
+	display:inline;
+	padding:5px 10px 5px 10px;
+	margin-left:10%;
+}
+
+.text{
+	font-size:16px;
+	margin-left:5%;
+	margin-right:5%;
+}

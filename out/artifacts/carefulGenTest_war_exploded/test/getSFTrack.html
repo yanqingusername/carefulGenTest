@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<script src="../js/jquery.js" type="text/javascript"></script>
+	<style type="text/css">
+		.main-wrapper {
+			width: 100%;
+		}
+
+		.container-area {
+			width: 100%;
+		}
+
+		.P1 {
+			min-height: 700px;
+			margin: 0;
+			padding: 0;
+			margin-top: 15px;
+			background: #fff;
+			text-align: center;
+			padding-bottom: 20px;
+		}
+
+		.P2 {
+			padding: 30px 10px 0px 10px;
+			/* margin-bottom: 20px; */
+		}
+
+		.P3 {
+			border: 1px solid #DCDCDC;
+			/* padding:20px 0; */
+		}
+
+		.P3_title {
+			/* padding:0 20px; */
+		}
+
+		.P3_1 {
+			padding: 10px 20px;
+			width: 100%;
+			text-align: left;
+			font-size: 18px;
+			word-wrap: break-word;
+			line-height: 15px;
+			font-weight: bold;
+		}
+
+		.P3_bottom {
+			border-bottom: 1px solid #DCDCDC;
+		}
+
+		/* 物流 */
+		.trans {
+			width: 100%;
+			height: auto;
+		}
+
+		.trans ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.trans ul li {
+			display: inline-block;
+			float: left;
+			position: relative;
+		}
+
+		.left {
+			width: 25%;
+			text-align: left;
+		}
+
+		.right {
+			width: 75%;
+			box-sizing: border-box;
+			border-left: 1px solid #C4C4C4;
+			text-align: left;
+		}
+
+		.time {
+			text-align: right;
+		}
+
+		.right img {
+			width: 25px;
+			height: 25px;
+			vertical-align: middle;
+			position: absolute;
+			left: -12.5px;
+		}
+
+		.transCon {
+			display: inline-block;
+			padding: 0 0px 8px 30px;
+		}
+
+		/* 物流1 */
+		.P4 {
+			display: flex;
+			padding: 0 20px;
+			text-align: left;
+			/* align-items:center; */
+			justify-content: center;
+			flex-direction: row;
+			flex-wrap: wrap;
+			font-size: 12px;
+			line-height: 25px;
+		}
+
+		.P4_1 {
+			font-weight: bold;
+			width: 100%;
+			margin-top: 4px;
+		}
+
+		.P4_latest {
+			color: #DC143C;
+		}
+
+		.P4_2 {
+			width: 20%;
+			overflow: auto;
+		}
+
+		.P4_3 {
+			width: 80%;
+		}
+
+		.ui-stepTime {
+			font-size: 9px;
+			/* border: 1px solid #a0b8cf; */
+			margin: 30px 1px 5px 1px;
+			white-space: normal;
+		}
+	</style>
+</head>
+
+<!-- 个人中心 -->
+<main class="main-wrapper">
+	<div class="container-area">
+		<div id="menu"></div>
+
+		<div class="container-area-right">
+			<div class="P1" id="loading">
+				<div style="font-size:35px;text-aligin:center;padding-top:150px;">Loading...</div>
+			</div>
+			<div class="P1" id="content" style="display:none;">
+				<div class="P2">
+					<div id="stepBar" class="ui-stepBar-wrap">
+					</div>
+				</div>
+				<div class="P3">
+					<div id="flow_info"></div>
+					<div id="flow_info1"></div>
+					<div class="P3_bottom"></div>
+					<div class="P3_1" style="color:#C71585">订单信息：</div>
+					<div style="text-align: left; overflow-y: auto; max-height: 300px; padding: 10px 20px;"
+						id="flow_details_info">
+					</div>
+					<div class="P3_bottom"></div>
+					<div id="order_message">
+					</div>
+					<div class="P3_bottom"></div>
+					<div class="P3_1" style="color:#C71585">物流信息：</div>
+					<div id="address_info">
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</main>
+
+<body>
+	<script type="text/javascript" src="../js/jquery.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script>
+		//var url = "http://syrdev.coyotebio-lab.com/zhongkangMallmanage/tb/order/getSFTrackingSingleInfo_Phone.hn?"
+		//var url = "http://store.coyotebio-lab.com/zhongkangMallmanage/tb/order/getSFTrackingSingleInfo_Phone.hn?"
+
+		function GetRequest() {
+			var url = location.search; //获取url中"?"符后的字串
+			var theRequest = new Object();
+			if (url.indexOf("?") != -1) {
+				var str = url.substr(1);
+				strs = str.split("&");
+				for (var i = 0; i < strs.length; i++) {
+					theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+				}
+			}
+			return theRequest;
+		}
+
+		var Request = new Object();
+		Request = GetRequest();
+		var phone = Request["phone"];
+		var order_serial = Request["order_serial"];
+		console.log(phone)
+		console.log(order_serial)
+
+		// 获取详情
+		getDetails();
+		function getDetails() {
+			$.ajax({
+				url: "../express/getSFTrackingSingleInfo_Phone.hn?order_serial=" + order_serial + "&lang=0" + "&last4number=" + phone.substring(phone.length - 4),
+				type: 'get',
+				dataType: "json",
+				success: function (data) {
+					if (data.success) {
+						console.log(data.trackinfo);
+						showOrderInfo(data.trackinfo);
+					} else {
+						alert(data.msg);
+						window.close();
+					}
+				}
+			});
+		}
+
+		function showOrderInfo(orderInfo) {
+			// 展示
+			$("#content").removeAttr("style");
+			$("#loading").css('display', 'none');
+			$("#stepBar").empty();
+
+			$("#flow_details_info").append("快递单号:<a href='#'>" + order_serial + "</a>");
+
+			for (i = 0; i < orderInfo.length; i++) {
+				var color = 'black';
+				if (i == 0) {
+					color = 'red';
+				}
+				var html = "<div style='color:" + color + ";width: 90%; margin: auto;padding: 10px;"
+					+ "background-color: #ffffff!important;padding: 14px; border-left: 6px solid #ccc!important;"
+					+ "border-color: #c71585!important;'><div style='text-align: left;'>" + orderInfo[i].Date + "</div>"
+					+ "<div style='text-align: left;'>" + orderInfo[i].StatusDescription + "</div></div>"
+				$("#address_info").append(html);
+			}
+		}
+
+
+	</script>
+</body>
+
+</html>

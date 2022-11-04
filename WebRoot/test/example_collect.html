@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>样本采集</title>
+	
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" type="text/css" href="../css/exam.css">
+	<link rel="stylesheet" type="text/css" href="../css/pintuer.css" />
+    <link rel="stylesheet" type="text/css" href="../css/shop.css" />
+    
+    <style type="text/css">
+       progress{
+          width: 100%;
+          height: 5px;
+          color:#f00;
+          background:#EFEFF4;
+          border-radius: 0.1rem;
+       }
+       progress::-webkit-progress-bar{
+          background-color: #f2f2f2;
+          border-radius: 0.2rem;
+       }
+       progress::-webkit-progress-value{
+          background: #74CFC8;
+          border-radius: 0.2rem;
+       }
+       
+    </style>
+
+  </head>
+  
+  <body>
+   <div style="width:96%;height:auto;float:left;margin-left:2%;margin-top:10px">
+    <div style="width:100%;height:auto;float:left;">
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left">样本绑定</div>
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left;margin-left:6%;">样本采集</div>
+       <div style="width:20%;font-size:15px;color:#A2A2A2;float:left;margin-left:6%;">样本回寄</div>
+       <div style="width:20%;font-size:15px;color:#A2A2A2;float:left;margin-left:6%;">样本检测</div>
+    </div>
+    <div style="width:100%;height:auto;float:left" class="content">
+      <progress value="35" max="100">
+      </progress>
+    </div>
+    
+    <div style="width:100%;height:auto;float:left;margin-top:3%;display:none" id="collect" >
+      <img alt="样本采集流程图" style="height:auto;width:100%;" id="collectImg" src="">
+    </div>
+    <div style="width:100%;height:auto;float:left;margin-top:3%;display:none" id="noInfo" >
+      <img alt="样本采集流程图" style="height:auto;width:20%;margin:10% 40%" src="./images/noInfo.png">
+      <div style="width:100%;font-size:15px;color:#A2A2A2;text-align:center">无样本采集流程图，请查看试剂盒上的采样说明</div>
+    </div>
+    
+   </div>
+   <div style="width:96%;height:auto;float:left;margin-right:2%;">
+       <footer style="width:100%;margin-bottom:1%;margin-top:9%;position:inherit;" class="bg-white foot-height clearfix" onclick="goExampleReturn()" id="footer" style="z-index:10;">
+         <div style="width:100%;float:left">
+          <div style="width:94%;float:left;margin-left:4%;border-radius:10px;"  class="shop-goods-add text-white bg-main text-center" >我已了解，准备提交</div>
+       </div>
+       </footer>
+   </div>
+    
+   <script type="text/javascript" src="../js/jquery.js"></script>
+   <script type="text/javascript" src="../js/common.js"></script>
+   <script>
+    var Request = new Object();
+	Request = GetRequest();
+	var open_id = Request["open_id"] == undefined ? "" : Request["open_id"];
+    var sample_id = Request["sample_id"] == undefined ? "" : Request["sample_id"];
+    
+    getUserId();
+	function getUserId(){
+		$.ajax({
+	        url: "../api/getUserId.hn?user_id=" + open_id,
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+	   		success: function(data){
+	   	    	if(data.success && data.code == "200"){
+	   	    		open_id = data.msg;
+	   	    		getSamplingType();
+	   	    	}else if(data.success && data.code == "199"){
+	   	    		window.location = data.msg;
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    	}
+	   	    }
+		});
+	}
+	
+	function getSamplingType(){
+		$.ajax({
+	        url: "../api/getSamplingType.hn?sample_id=" + sample_id,
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+	   		success: function(data){
+	   	    	if(data.success){
+	   	    		var sample_type = data.msg;
+	   	    		if(sample_type.indexOf("口腔")!=-1){
+	   	    			$("#noInfo").css("display","none");
+                    	$("#collect").css("display","");
+                       	$("#collectImg").attr("src", "./images/口腔.jpg");
+                    }else if(sample_type.indexOf("阴道")!=-1){
+                       	$("#noInfo").css("display","none");
+                    	$("#collect").css("display","");
+                       	$("#collectImg").attr("src", "./images/阴道.jpg");
+                    }else if(sample_type.indexOf("粪便")!=-1){
+                       	$("#noInfo").css("display","none");
+                    	$("#collect").css("display","");
+                       	$("#collectImg").attr("src", "./images/粪便.jpg");
+                    }else{
+                    	$("#noInfo").css("display","");
+                    	$("#collect").css("display","none");
+                    }
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    		var url="./example_bind.html?open_id="+open_id;
+	   	    		window.location = url;
+	   	    	}
+	   	    }
+		});
+	}
+    
+    
+    function goExampleReturn(){
+       // 跳转到 example_send_online
+       
+       var myurl = "./example_send.html?open_id=" + open_id + "&sample_id=" + sample_id;
+       window.location.href=myurl;
+    }
+    
+   </script>
+  </body>
+</html>

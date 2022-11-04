@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>卡尤迪医学检验实验室</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" href="../css/amazeui.min.css">
+
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script> -->
+
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/html2canvas.js"></script>
+    <script type="text/javascript" src="../js/jsPdf.debug.js"></script>
+    <style>
+        html {
+            font-size: 10px;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            pointer-events: none;
+            /*禁止none ，启用auto*/
+        }
+        th {
+           
+        }
+        td {
+            
+            font-size: 7px;
+        }
+    </style>
+</head>
+
+<body>
+<!-- <div style="text-align: center;">
+    <button onclick="makeMpdf()" style="width: 100%; height: 40px; margin: auto;background-color:aliceblue;
+			border-radius: 10px;border: unset ">下载报告</button>
+</div> -->
+<div id="pdfDom">
+
+
+    <img src="pic/hpv/hpv_head.jpg" style="width:100%;height:auto;">
+    <img src="pic/hpv/info2x.png" style="width:100%;height:auto;">
+        <div
+            style="width:84.6%;margin:auto;height:auto;box-shadow: 0px 0px 10px #ECECEC;border-radius: 0 0px 10px 10px;text-align: center;">
+        <div style="font-size: 18px;color:#585858">
+            <div style="margin: auto;width: 80%;text-align: left;display: flex;">
+                <div style="width: 50%;" id="detection_name"></div>
+                <div style="width: 50%;" id="detection_age"></div>
+            </div>
+            <br>
+            <div style="margin: auto;width: 80%;text-align: left;" id="detection_sampleid"></div>
+            <br>
+            <div style="margin: auto;width: 80%;text-align: left;" id="detection_phone"></div>
+        </div>
+        <br><br>
+        <div>
+            <span style="color: hotpink;font-weight: 600;font-size: 21px;">HPV 高危亚型</span><br>
+            <table style="margin:0 auto;">
+                <thead>
+                    <tr>
+                        <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/gen_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测基因型</th>
+                        <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/winfo_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测结果</th>
+                        <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/gen_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测基因型</th>
+                        <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/winfo_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测结果</th>
+                    </tr>
+                </thead>
+                <tbody id="HPV_Htable">
+
+                    </tbody>
+                
+            </table>
+
+        </div>
+        <br>
+        <div>
+            <span style="color: hotpink;font-weight: 600;font-size: 21px;">HPV 低危亚型</span><br>
+            <table style="margin:0 auto;">
+                <thead>
+                <tr>
+                    <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/gen_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测基因型</th>
+                    <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/winfo_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测结果</th>
+                    <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/gen_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测基因型</th>
+                    <th style="min-width:67px;text-align: center;font-size: 9px;"><img src="pic/hpv/winfo_icon.jpg" style="max-width: 12px;margin-bottom: 2px;">检测结果</th>
+                </tr>
+                </thead>
+                <tbody id="HPV_Utable">
+
+                </tbody>
+            </table>
+
+        </div>
+        <!--<img src="pic/hpv/画板2.jpg" style="width:97%;height:auto;margin:auto;">-->
+<!--            <img src="pic/hpv/result_explain_head.jpg" style="width:100%;height:auto;margin:auto;">
+        <img src="pic/hpv/result_explain_1.jpg" id="HPV_Result" style="width:100%;height:auto;margin:auto;">-->
+
+    </div>
+            <img src="pic/hpv/result_explain_head.jpg" style="width:100%;height:auto;margin:auto;">
+            <img src="" id="HPV_Result" style="width:100%;height:auto;margin:auto;">
+            <img src="pic/hpv/statement.png" style="width:100%;height:auto;margin:auto;">
+    		<img src="pic/hpv/reference.png" style="width:100%;height:auto;margin:auto;">
+</div>
+
+<!-- <div><a  href="./pic/info2.png" download="downImg2">下载222</a></div>
+<div><a class="down2" href="" download="downImg">下载2</a></div> -->
+
+<!-- <br><br><br><br> -->
+<script>
+    javascript: void (document.body.oncopy = null)
+    javascript: void (document.body.onpaste = null)
+
+    var sample_id = "";
+    var phone = "";
+    var detection_state="";
+    GetRequest();
+    function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            search_msg = url.substr(1);
+			sample_id = url.split("sample_id=")[1];
+
+        }
+        return theRequest;
+
+    }
+
+    getResult();
+    function getResult() {
+
+        $.ajax({
+            url : "../apihealth/getSampleresult.hn",
+            type : 'get',
+            data : {
+                sample_id : sample_id
+            },
+            dataType : "json",
+            success : function(data) {
+                if (data.success) {
+                	var list_info = "";
+                	var list_info2 = "";
+                    phone = data.result["phone"];
+                    sample_id = data.result["sample_id"]
+                    var detection_name = data.result["name"];
+                    var detection_age = data.result["age"];
+                    $("#detection_name").html("姓名:"+detection_name);
+                    $("#detection_age").html("年龄:"+detection_age);
+                    $("#detection_sampleid").html("样本编号:"+sample_id);
+                    $("#detection_phone").html("手机号:"+phone);
+                  
+
+                    var detection_gen = data.result["snpName"];
+                    detection_gen = detection_gen.split(";");
+                    var detection_result = data.result["snpResult"];
+                    detection_result = detection_result.split(";");
+                    
+                    var HPV_Gen1 = detection_gen.slice(0,10);
+                    var HPV_Gen2 = detection_gen.slice(10,19);
+                    var HPV_Gen3 = detection_gen.slice(19,23);
+                    var HPV_Gen4 = detection_gen.slice(23,26);
+                    
+                    var HPV_result1 = detection_result.slice(0,10);
+                    var HPV_result2 = detection_result.slice(10,19);
+                    var HPV_result3 = detection_result.slice(19,23);
+                    var HPV_result4 = detection_result.slice(23,26);
+                    
+					for (var i = 0; i < HPV_Gen1.length; i++) {
+                       
+                       list_info += "<tr><td id=\""+HPV_Gen1[i]+"\">"+HPV_Gen1[i]+"</td>";
+                       list_info += "<td style=\"min-width:75px;text-align: center;\" class=\""+HPV_result1[i]+"\">"+HPV_result1[i]+"</td>";
+                       list_info += "<td id=\""+HPV_Gen2[i]+"\">"+HPV_Gen2[i]+"</td>";
+                       list_info += "<td style=\"min-width:75px;text-align: center;\" class=\""+HPV_result2[i]+"\">"+HPV_result2[i]+"</td></tr>";
+                       
+                    }
+                    for (var j = 0; j < HPV_Gen3.length; j++) {
+                       
+                       list_info2 += "<tr><td id=\""+HPV_Gen3[j]+"\">"+HPV_Gen3[j]+"</td>";
+                       list_info2 += "<td style=\"min-width:75px;text-align: center;\" class=\""+HPV_result3[j]+"\">"+HPV_result3[j]+"</td>";
+                       list_info2 += "<td class=\""+HPV_Gen4[j]+"\">"+HPV_Gen4[j]+"</td>";
+                       list_info2 += "<td style=\"min-width:75px;text-align: center;\" class=\""+HPV_result4[j]+"\">"+HPV_result4[j]+"</td></tr>";
+                       
+                    }
+                    
+                    
+					$("#HPV_Htable").append(list_info);
+					$("#HPV_Utable").append(list_info2);
+					$("#"+HPV_Gen1[i]+"").html("");
+					$("#undefined").html("");
+					$(".undefined").html("");
+					$(".阳性").css("color","red");
+					$(".阴性").css("color","green");
+					
+					
+					
+					$("#HPV_Htable").find("tr").each(function () {
+					　　//第二列单元格的值eq(索引)
+					　　var result_height1 = $(this).children('td:eq(2)').text();
+						var result_height2 = $(this).children('td:eq(3)').text();
+						var last_result = result_height2[9];
+
+						console.log(last_result+"芜湖");
+					});
+
+
+                     var  HPV_Hresult = detection_result.slice(2,19);
+                     
+					var HPV_Uresult = detection_result.slice(19,27);
+
+                    if("阳性"==detection_result[0] || "阳性"==detection_result[1]){
+                        $("#HPV_Result").attr("src", "pic/hpv/result_explain_1.jpg");
+                    }else if(HPV_Hresult.indexOf("阳性") != -1) {
+                        $("#HPV_Result").attr("src", "pic/hpv/result_explain_2.jpg");
+                    }else if (HPV_Uresult.indexOf("阳性") != -1) {
+                        $("#HPV_Result").attr("src", "pic/hpv/result_explain_4.jpg");
+                    }else {
+                        $("#HPV_Result").attr("src", "pic/hpv/result_explain_3.jpg");
+                    }
+
+                } else {
+					//alert("没有查询到您的报告");
+					window.location.href="http://xmr.coyotebio-lab.com:8080//carefulGenTest/ntest/login.html";
+                }
+            }
+        });
+
+    }
+
+    //直接选择要截图的dom，就能截图，但是因为canvas的原因，生成的图片模糊
+    //html2canvas(document.querySelector('div')).then(function(canvas) {
+    //    document.body.appendChild(canvas);
+    //});
+    //创建一个新的canvas
+    /* $(function () {
+    window.pageYoffset = 0;
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    var canvas2 = document.createElement("canvas");
+    let _canvas = document.querySelector('body');
+    var w = parseInt(window.getComputedStyle(_canvas).width);
+    var h = parseInt(window.getComputedStyle(_canvas).height);
+    //将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
+    canvas2.width = w * 2;
+    canvas2.height = h * 2;
+    canvas2.style.width = w + "px";
+    canvas2.style.height = h + "px";
+    //可以按照自己的需求，对context的参数修改,translate指的是偏移量
+    //  var context = canvas.getContext("2d");
+    //  context.translate(0,0);
+    var context = canvas2.getContext("2d");
+    context.scale(2, 2);
+    html2canvas(document.querySelector('#demo'), { canvas: canvas2 }).then(function(canvas) {
+        //document.body.appendChild(canvas);
+        //canvas转换成url，然后利用a标签的download属性，直接下载，绕过上传服务器再下载
+        document.querySelector(".down2").setAttribute('href', canvas.toDataURL());
+    });
+    }) */
+
+    //var downPdf = document.getElementById("demo");
+    function makeMpdf1() {
+        html2canvas(document.body, {
+            onrendered: function (canvas) {
+
+                var contentWidth = canvas.width;
+                var contentHeight = canvas.height;
+
+                //一页pdf显示html页面生成的canvas高度;
+                var pageHeight = contentWidth / 592.28 * 841.89;
+                //未生成pdf的html页面高度
+                var leftHeight = contentHeight;
+                //pdf页面偏移
+                var position = 0;
+                //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+                var imgWidth = 595.28;
+                var imgHeight = 592.28 / contentWidth * contentHeight;
+
+                var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                var pdf = new jsPDF('', 'pt', 'a4');
+
+                //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                //当内容未超过pdf一页显示的范围，无需分页
+                if (leftHeight < pageHeight) {
+                    pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                } else {
+                    while (leftHeight > 0) {
+                        pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                        leftHeight -= pageHeight;
+                        position -= 841.89;
+                        //避免添加空白页
+                        if (leftHeight > 0) {
+                            pdf.addPage();
+                        }
+                    }
+                }
+
+                pdf.save('content.pdf');
+            }
+        })
+    }
+
+    function makeMpdf(){
+        // 在ios手机上会导致 上方空白 后边内容丢失  在电脑浏览器上的ios并不会
+        const u = navigator.userAgent
+        const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1 // android终端
+        const isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) // ios终端
+        html2canvas(document.getElementById("pdfDom"), {
+            dpi: 200,
+            allowTaint: true,
+            y: isIOS ? 200 : 0,
+            onrendered:function(canvas) {
+
+
+                alert("1");
+                var contentWidth = canvas.width;
+                var contentHeight = canvas.height;
+
+                //一页pdf显示html页面生成的canvas高度;
+                var pageHeight = contentWidth / 592.28 * 841.89;
+                //未生成pdf的html页面高度
+                var leftHeight = contentHeight;
+                //页面偏移
+                var position = 0;
+                //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+                var imgWidth = 595.28;
+                var imgHeight = 592.28/contentWidth * contentHeight;
+
+                var pageData = canvas.toDataURL('image/jpeg', 1.0);
+                console.log(pageData);
+                if(isIOS){
+
+                    console.log(pageData);
+                }
+
+                var pdf = new jsPDF('', 'pt', 'a4');
+
+                //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                //当内容未超过pdf一页显示的范围，无需分页
+                alert("2");
+                if (leftHeight < pageHeight) {
+                    pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight );
+                    alert("3");
+                } else {
+                    while(leftHeight > 0) {
+                        alert("4");
+                        pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                        leftHeight -= pageHeight;
+                        position -= 841.89;
+                        //避免添加空白页
+                        if(leftHeight > 0) {
+                            pdf.addPage();
+                        }
+                    }
+                }
+
+                pdf.save('content.pdf');
+            },
+            background: "#fff"
+        })
+
+        /*html2canvas(
+           document.getElementById("pdfDom"),//为页面内容所在元素的ID
+           {
+               dpi: 192, //导出pdf清晰度
+               scale: 2,
+               onrendered: function (canvas) {
+                   debugger;
+                   var contentWidth = canvas.width;
+                   var contentHeight = canvas.height;
+                   var _width
+                   //一页pdf显示html页面生成的canvas高度;
+                   //var pageHeight = contentWidth / 592.28 * 841.89;
+                   var pageHeight = $(window).height();
+                   //未生成pdf的html页面高度
+                   var leftHeight = contentHeight;
+                   //pdf页面偏移
+                   var position = 0;
+                   //html页面生成的canvas在pdf中图片的宽高（a4纸的尺寸[595.28,841.89]）
+                   var imgWidth = $(window).innerWidth;
+                   var imgHeight = $(window).height();
+
+                   var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                   var pdf = new jsPDF('', 'pt', 'a4');
+
+                   //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                   //当内容未超过pdf一页显示的范围，无需分页
+                   if (leftHeight < pageHeight) {
+                       pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height )
+                   } else {
+                       while (leftHeight > 0) {
+                           pdf.addImage(pageData, 'JPEG', 0, 0, 595.28, 592.28/canvas.width * canvas.height )
+                           leftHeight -= pageHeight;
+                           //position -= 841.89;
+                           //避免添加空白页
+                           if (leftHeight > 0) {
+                               pdf.addPage();
+                           }
+                       }
+                   }
+                   pdf.save('temp.pdf');
+               },
+               //背景设为白色（默认为黑色）
+               background: "#fff"
+           })*/
+
+    }
+
+    function pdfComprovativo(arg) {
+        var doc = new jsPDF();
+        doc.text(20, 20, 'Hello world！');
+        doc.save('Test.pdf');
+        doc.output('dataurl')
+    }
+
+    /*function makeMpdf() {
+        if (confirm("您确认下载该PDF文件吗?")) {
+            /*var pdf = new jsPDF('p', 'pt', 'a4');
+            // 设置打印比例 越大打印越小
+            pdf.internal.scaleFactor = 1;
+            var options = {
+                pagesplit: true, //设置是否自动分页
+                "background": '#FFFFFF'   //如果导出的pdf为黑色背景，需要将导出的html模块内容背景 设置成白色。
+            };
+            var printHtml = $('#pdfDom').get(0);   // 页面某一个div里面的内容，通过id获取div内容
+            pdf.addHTML(printHtml, 15, 15, options, function () {
+                //pdf.save('目标.pdf');
+                pdf.output('dataurlnewwindow');
+            });
+
+
+
+        var pdf = new jsPDF('p', 'mm', 'a4');    //A4纸，纵向
+         a4w = 592.28, a4h =841.89;
+
+         var content = document.getElementById('pdfDom');
+
+        var length = (content.offsetHeight/a4h);
+        length = length.split(".")[0]+1;
+        var img_arr = [];
+
+        $(pdfDom).each(function (index,value) {
+
+             window.scrollTo(0,$(this).offset().top);//最为关键的地方 需要滚动到指定标签  否则图片不全
+            html2canvas($(this), {
+
+                logging: false,
+
+                windowWidth:document.body.scrollWidth,
+                windowHeight:document.body.scrollHeight,
+                background: '#FFFFFF',
+                x:0,
+                scrollY:$(this).offset().top,
+                async:false,//同步执行
+            }).then(function (canvas) {
+
+                    var img = canvas.toDataURL('image/png', 1.0);
+                    // $('.images').append('<image src="'+img+'" />')
+                    pdf.addImage(img, 'PNG', 0, 0, a4w, a4h);
+                    //添加图像到页面，保留10mm边距
+
+                    delete canvas;
+
+                    console.log(index)
+                    if(index <(length - 1)){
+                        var name = $('#order_name').val();
+                        pdf.save(name + '体检报告.pdf');
+                        return;
+                    }else{
+                        pdf.addPage();//如果后面还有内容，添加一个空页
+                    }
+
+        });
+    })
+        }
+    }*/
+</script>
+</body>
+
+</html>

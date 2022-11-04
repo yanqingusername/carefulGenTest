@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>样本绑定</title>
+    <link rel="stylesheet" type="text/css" href="../css/exam.css">
+    <link rel="stylesheet" type="text/css" href="../css/pintuer.css" />
+    <link rel="stylesheet" type="text/css" href="../css/shop.css" />
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script src="../js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="../js/JSSDK.js"></script>
+
+
+
+    <style type="text/css">
+        .btn {
+            background-color: #72CDC7;
+            color: #ffffff;
+            height: 123px;
+            width: 70%;
+            margin-left: 15%;
+            border-radius: 20px;
+            margin-top: 20%;
+            font-size: 45px;
+            font-weight: 600;
+            padding-top: 2%;
+        }
+
+        .page {
+            width: 100%;
+            height: 600px;
+            float: left;
+            margin-bottom: 30px;
+            background-color: #8EDFD8;
+        }
+
+        .down {
+            width: 100%;
+            float: left;
+            background-color: #ffffff;
+            height: 600px;
+            border-radius: 20px;
+        }
+
+        .inputClass {
+            height: 130px;
+            width: 70%;
+            border-radius: 20px;
+            margin-left: 15%;
+            font-size: 34px;
+            padding-left: 4%;
+            border: 1px solid #9c8585;
+        }
+
+        .scan {
+            text-align: right;
+            width: 70%;
+            margin-left: 15%;
+            color: #72CDC7;
+            font-size: 35px;
+            font-weight: 500;
+            margin-top: 3%;
+        }
+        .hello{
+            width: 70%;
+            margin-left: 15%;
+            font-size: 45px;
+            color: #72CDC7;
+            text-align: left;
+            font-weight: 600;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div style="width:100%;float:left;">
+        <img alt="" style="height:auto;width:100%;" src="./images/bind.png">
+    </div>
+
+    <div class="down">
+        <div class="hello" style="margin-top: 15%;">
+            您好
+        </div>
+        <div class="hello" >
+            欢迎登录！
+        </div>
+        <div style="height: auto;width: 100%;margin-top: 15%;">
+            <input type="text" id="sample_id" placeholder="请输入样本编号" class="inputClass">
+        </div>
+        <div class="scan" id="scanQRCode">扫一扫</div>
+        <div class="btn" id="next">下一步</div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    var Request = new Object();
+    Request = GetRequest();
+    var open_id = Request["open_id"];
+    $("#next").click(function () {
+
+        var sample_id = $("#sample_id").val();
+        $.ajax({
+            url: "../api/sampleTest.hn?sample_id=" + sample_id,
+            type: 'get',
+            dataType: "json",
+            success: function (data) {
+                if (!data.success) {
+                    alert(data.msg);
+                }else{
+                    var myurl="./example_bind.html?sample_id="+sample_id+"&open_id="+open_id;
+                    window.location.href=myurl;
+                }
+            }
+        });
+
+    })
+    function getSampleInfo() {
+        var sample_id = document.getElementById("sample_id").value;
+        $.ajax({
+            url: "../api/getSampleInfo.hn",
+            type: 'POST',
+            data: { "sample_id": sample_id },
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
+                    var sampleInfo = data.msg;
+                    var html = '<div style="width:100%;height:auto;font-size:14px;margin-top:3%;">批次号：' + sampleInfo.batch_no + '</div>'
+                        + '<div style="width:100%;height:auto;font-size:14px;margin-top:3%;">生产日期：' + sampleInfo.production_time + '</div>'
+                        + '<div style="width:100%;height:auto;font-size:14px;margin-top:3%;">有效期：' + sampleInfo.effective_date + '天</div>'
+                        + '<div style="width:100%;height:auto;font-size:14px;margin-top:3%;">检测项目：' + sampleInfo.commodity_name + '</div>'
+                        + '<div style="width:100%;height:auto;font-size:14px;margin-top:3%;">标本类型：' + sampleInfo.sample_type + '</div>';
+                    $("#sampleInfo").html(html);
+                }
+            }
+        });
+    }
+
+    $("#sample_id").bind('input porpertychange', function () {
+        if (sample_id.length == 12) {
+            getSampleInfo();
+        } else {
+            $("#sampleInfo").html("");
+        }
+    });
+</script>
+</html>

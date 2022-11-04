@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>采样指南</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<script src="../js/jquery.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<style type="text/css">
+.guide {
+	text-align: center;
+	padding-top: 5%;
+}
+
+.guide_button {
+	width: 90%;
+	height: 45px;
+	background: #75CEC8;
+	border-radius: 6px;
+	font-size: 17px;
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-weight: 500;
+	color: #FFFFFF;
+	line-height: 24px;
+	margin-top: 30px;
+	border: unset;
+}
+</style>
+</head>
+<body style="background: #F5F5F5;">
+	<div class="guide">
+		<img id="image" src="" style="width: 90%;height: 80%;">
+	</div>
+</body>
+<script type="text/javascript">
+	function GetRequest() {
+		var url = location.search; //获取url中"?"符后的字串
+		var theRequest = new Object();
+		if (url.indexOf("?") != -1) {
+			var str = url.substr(1);
+			strs = str.split("&");
+			for (var i = 0; i < strs.length; i++) {
+				theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+			}
+		}
+		return theRequest;
+
+	}
+	var Request = new Object();
+	Request = GetRequest();
+	var valOpenid = Request['openid'];
+	var sample_id = Request['sample_id'];
+	
+	$(function(){
+		$.ajax({
+			url : "../apihealth/getSampleType.hn",
+			dataType : "json",
+			type : "get",
+			data : {
+				"sample_id" : sample_id
+			},
+			success : function(data) {
+				console.log(data)
+				if (data.msg == "口腔") {
+					$("#image").attr("src", "images/牙菌斑采样指南@3x.png");
+				} else if (data.msg == "口腔黏膜") {
+					$("#image").attr("src", "images/口腔黏膜采样指南@3x.png");
+				} else if (data.msg == "阴道") {
+					$("#image").attr("src", "images/阴道微生态采样指南截图@3x.png");
+				} else if (data.msg == "HPV") {
+					$("#image").attr("src", "images/HPV.png");
+				} else if (data.msg == "粪便") {
+					$("#image").attr("src", "images/粪便.jpg");
+				} else {
+					$("#image").attr("src", "images/guide.png");
+				}
+			}
+		})
+	})
+</script>
+</html>

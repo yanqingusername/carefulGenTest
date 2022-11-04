@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>样本回寄</title>
+	
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	
+	<link rel="stylesheet" type="text/css" href="../css/exam.css">
+	<link rel="stylesheet" type="text/css" href="../css/pintuer.css" />
+    <link rel="stylesheet" type="text/css" href="../css/shop.css" />
+    
+    <style type="text/css">
+      .yanzhengma {font-size: 14px; border: none;background-color: #67C7BE;color: #fff;border-radius: 8px; }
+      .yanzhengma:disabled { background-color: #ddd; }
+      progress{
+          width: 100%;
+          height: 5px;
+          color:#f00;
+          background:#EFEFF4;
+          border-radius: 0.1rem;
+       }
+       progress::-webkit-progress-bar{
+          background-color: #f2f2f2;
+          border-radius: 0.2rem;
+       }
+       progress::-webkit-progress-value{
+          background: #74CFC8;
+          border-radius: 0.2rem;
+       }
+    </style>
+
+  </head>
+  
+  <body>
+    <div style="width:96%;height:auto;float:left;margin-left:2%;margin-top:10px">
+    <div style="width:100%;height:auto;float:left;">
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left">样本绑定</div>
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left;margin-left:6%;">样本采集</div>
+       <div style="width:20%;font-size:15px;color:#74CFC8;float:left;margin-left:6%;">样本回寄</div>
+       <div style="width:20%;font-size:15px;color:#A2A2A2;float:left;margin-left:6%;">样本检测</div>
+    </div>
+    <div style="width:100%;height:auto;float:left" class="content">
+      <progress value="65" max="100">
+      </progress>
+    </div>
+
+    <div style="width:100%;height:auto;float:left;margin-top:3%;padding: 0 2%">
+       <div style="width:100%;height:auto;font-size:15px;margin-top:0%;color: #67C7BE">自行预约：联系当地顺丰快递邮寄或关注微信公众号“顺丰速运”</div>
+       <div style="width:100%;height:auto;font-size:15px;margin-top:1%;">1.点击“寄快递”填写信息下单，寄回费用由卡尤迪到付</div>
+    </div>
+
+    <div style="width:100%;height:auto;float:left;margin-top:4%;padding: 0 2%">
+       <h4>回寄地址</h4>
+    </div>
+    <div style="width:100%;height:auto;float:left;margin-top:4%;padding: 0 2%">
+       <div style="width:100%;float:left;">收件人：<span id ="recipient" style=""></span></div>
+       <div style="width:100%;margin-top:2%;float:left;">联系电话：<span id ="phoneKYD" style=""></span></div>
+       <div style="width:100%;margin-top:2%;float:left;">详细地址：<span id ="addressKYD" style=""></span></div>
+    </div>
+  </div>
+  <div style="width:96%;float:left;height:65px;">
+     
+   </div>
+  <div style="width:96%;height:auto;float:left;margin-right:2%;">
+    <footer style="width:100%;margin-bottom:1%;" class="bg-white foot-height clearfix" onclick="goSubmit()" id="footer" style="z-index:10;">
+      <div style="width:100%;float:left">
+         <div style="width:94%;float:left;margin-left:3%;border-radius:10px;"  class="shop-goods-add text-white bg-main text-center" >确&nbsp;&nbsp;&nbsp;&nbsp;定</div>
+      </div>
+    </footer>    
+  </div>
+  <script type="text/javascript" src="../js/jquery.js"></script>
+  <script src="../js/input.js" type="text/javascript"></script>
+  <script type="text/javascript" src="../js/common.js"></script>
+  <script>
+  	var Request = new Object();
+	Request = GetRequest();
+	var open_id = Request["open_id"] == undefined ? "" : Request["open_id"];
+    var sample_id = Request["sample_id"] == undefined ? "" : Request["sample_id"];
+    getUserId();
+	function getUserId(){
+		$.ajax({
+	        url: "../api/getUserId.hn?user_id=" + open_id,
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+	   		success: function(data){
+	   	    	if(data.success && data.code == "200"){
+	   	    		open_id = data.msg;
+	   	    		getExpressReceiptInfo();
+	   	    	}else if(data.success && data.code == "199"){
+	   	    		window.location = data.msg;
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    	}
+	   	    }
+		});
+	}
+   
+    function getExpressReceiptInfo(){
+    	$.ajax({
+	        url: "../api/getExpressReceiptInfo.hn",
+	   		type: "get",
+	   		async: false,
+	   		dataType: "json",
+	   		success: function(data){
+	   	    	if(data.success){
+	   	    		var info = data.msg;
+	   	    		$("#recipient").text(info.name);
+	   	    		$("#phoneKYD").text(info.phone);
+	   	    		$("#addressKYD").text(info.city + info.area + info.address);
+	   	    	}else{
+	   	    		alert(data.msg);
+	   	    	}
+	   	    }
+		});
+    }
+    
+    
+    function goSubmit(){   
+        // 跳转到所有检测页面
+	    var url="./example_exam.html?open_id="+open_id;
+	    window.location = url;
+    }
+    
+  </script>
+  </body>
+</html>

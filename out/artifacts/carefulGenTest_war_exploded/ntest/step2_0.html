@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>登记信息</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Amaze UI" />
+<meta name="msapplication-TileColor" content="#0e90d2">
+<script src="../js/jquery.js"></script>
+<link rel="stylesheet" href="../css/amazeui.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="css/public.css" /> -->
+
+<!-- 引入样式和js文件 -->
+<link rel="stylesheet" type="text/css" href="css/mobileSelect.css" />
+<script src="js/mobileSelect.js" type="text/javascript"></script>
+<style>
+html {
+	font-size: 10px;
+}
+
+html, body {
+	background-color: #f0eff4;
+}
+
+body {
+	padding-bottom: 0;
+	margin: 0;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+.register {
+	padding: 8px 6px;
+	font-size: 14px;
+	margin-top: 32px;
+}
+
+.res-item {
+	position: relative;
+	width: 100%;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	background-color: #fff;
+}
+
+.res-icon {
+	position: absolute;
+	left: 8px;
+	top: 5px;
+	z-index: 100;
+	display: inline-block;
+	font-size: 18px;
+	color: #9c9c9c;
+}
+
+.res-item .input-item {
+	display: inline-block;
+	width: 100%;
+	padding-left: 31px;
+	height: 40px;
+	border: none;
+	font-size: inherit;
+}
+
+.res-item .input-item:focus {
+	outline-offset: 0;
+	outline: -webkit-focus-ring-color auto -2px;
+	background-color: #fefffe;
+	border: 1px solid #67C7BE;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 5px
+		rgba(226, 25, 69, .3);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 5px
+		rgba(226, 25, 69, 0.3);
+}
+
+.res-item .input-item:focus+.res-icon {
+	color: #67C7BE;
+}
+
+.res-btn {
+	margin-top: 10px;
+	padding: 0 0px;
+}
+
+.res-btn button {
+	background-color: #67C7BE;
+	font-size: 14px;
+	color: #fff;
+	border-radius: 8px;
+}
+
+.res-btn button:focus {
+	color: #fff;
+}
+
+fieldset {
+	-webkit-appearance: none;
+	width: 100%;
+	border: 1px soild #333;
+	margin: 0;
+	font-family: inherit;
+	font-size: 100%;
+	-moz-box-sizing: border-box;
+	box-size: border-box;
+	text-decoration: none;
+}
+
+.ui-input-text {
+	border-style: unset;
+	min-width: 60%;
+	-webkit-box-shadow: none;
+}
+
+.ui-focus {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.sampling_location_info {
+	border-radius: 20px;
+	margin-bottom: 80px;
+}
+
+.local_info {
+	margin: 2px 5px;
+	min-height: 30px;
+	align-items: center;
+	flex-wrap: wrap;
+	max-width: 100%;
+	word-break: break-all;
+	background-color: #F5F5F5;
+	display: flex;
+	padding: 5px;
+	border-radius: 10px;
+}
+
+.somthing {
+	/* position: relative;
+    margin: 0px auto 80px;
+    z-index: 100;
+    display: block;
+    padding: 0.2rem 0.8rem;
+    border-radius: 9px;
+    background-color: #fff; */
+	margin: 0px auto 80px;
+}
+
+.record {
+	position: relative;
+	margin: 0px auto;
+	z-index: 100;
+	display: block;
+	padding: 0.2rem 0.8rem;
+	border-radius: 10px;
+	width: 95%;
+	/*height: 172px;*/
+	height: auto;
+	background: #FFFFFF;
+	text-align: center;
+}
+
+.line {
+	width: 90%;
+	margin: auto;
+	border-bottom: solid 1px #e8e8e8;
+}
+
+.ui-icon-adds {
+	background: url(images/add_small.png) 15% 50% no-repeat;
+	background-size: 16px;
+}
+
+.ui-btn-icon-left:after {
+	background-color: transparent;
+}
+
+.somthing .item_name {
+	border: 0px;
+	border-radius: 10px;
+	width: 90%;
+	margin: 10px 0px;
+}
+
+div {
+	text-shadow: #fff 0px 0px 0px;
+}
+
+input {
+	text-shadow: #fff 0px 0px 0px;
+	border: 0;
+}
+
+.group {
+	font-size: 16px;
+	line-height: 55px;
+	display: flex;
+	align-items: center;
+	width: 95%;
+	margin: 0;
+	position: relative;
+}
+
+.process-status-new {
+    width: 90%;
+    height: 46px;
+    padding-top: 24px;
+    margin : auto;
+}
+
+.process-status-new ul {
+	margin: 0 36px;
+	border-top: 1px solid #DDDDDD;
+	height: 45px;
+	position: relative;
+	list-style: none;
+}
+
+.process-status-new ul li {
+	position: absolute;
+	float: left;
+	width: 50%;
+	top: -12px;
+}
+
+.process-status-new ul .p-gjj {
+	left: 0;
+}
+
+.process-status-new ul .p-basic {
+	left: 50.0%;
+}
+
+.process-status-new ul .p-edu {
+	left: 99.9%;
+	width : 0px;
+}
+
+.process-status-new ul li .box {
+	width: 88px;
+	position: relative;
+	margin-left: -44px;
+	z-index: 2;
+}
+
+.process-status-new ul li .box .icon {
+	width: 21px;
+	height: 21px;
+	padding: 1px;
+	margin: 0 auto;
+}
+
+.process-status-new ul li span.l {
+	position: absolute;
+	left: 0;
+	top: 11px;
+	width: 100%;
+	z-index: 1;
+	display: none;
+	height: 1px;
+	background-color: #75CEC8;
+}
+
+.steptext {
+	text-align: center;
+	font-size: 13px;
+	font-weight: 500;
+	color: #333333;
+	line-height: 18px;
+}
+
+.circle {
+	background-color: #75CEC8;
+	border: 0px solid #75CEC8;
+	width: 26px;
+	height: 26px;
+	display: block;
+	border-radius: 100%;
+	text-align: center;
+	color: #fff;
+}
+
+#res-btn {
+	background: #75CEC8;
+}
+
+#res-btn:disabled {
+	background: #CCCCCC;
+	opacity: 1;
+}
+
+.no_symbol{
+	outline:none;
+}
+
+.popupStyle {
+	display: none;
+	width: 160px;
+	background-color: rgb(85, 85, 85);
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 8px 8px;
+	position: fixed;
+	text-align: center;
+	z-index: 999;
+	top: 40%;
+	left: 50%;
+	margin-left: -80px;
+}
+
+.popupStyle::after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: #555 transparent transparent transparent;
+}
+</style>
+</head>
+<body>
+	<div class="process-status-new">
+		<ul class="p-n-2">
+			<li class="p-gjj"><span class="l" style="display:block;"></span>
+				<div class="box">
+					<div class="icon">
+						<span class="circle" onclick="go_step1()">1</span>
+					</div>
+					<p class="steptext">绑定采样管</p>
+				</div></li>
+			<li class="p-basic"><span class="l" style="display:block;"></span>
+				<div class="box">
+					<div class="icon">
+						<span class="circle" style="box-shadow: 0 0 1px 3px #9ce4dfb8;">2</span>
+					</div>
+					<p class="steptext">登记信息</p>
+				</div></li>
+			<li class="p-edu"><span class="l"></span>
+				<div class="box">
+					<div class="icon">
+						<span class="circle" onclick="go_step3()">3</span>
+					</div>
+					<p class="steptext">绑定成功</p>
+				</div></li>
+		</ul>
+	</div>
+
+	<div class="register">
+		<div class="record">
+			<div class="group">
+				<div style="width:30%;">姓名</div>
+				<div style="width: 70%;">
+					<input type="text"
+						style="background: #FFFFFF; text-shadow: #fff 0px 0px 0px; padding: 0px; width: 80%; float: left;"
+						name="name" id="name" class="no_symbol"
+						placeholder="请填写受检者姓名" maxlength="20" readonly/>
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="group">
+				<div style="width:30%;">年龄</div>
+				<div style="width: 70%;">
+					<input type="tel"
+						style="background: #FFFFFF; text-shadow: #fff 0px 0px 0px; padding: 0px; width: 80%; float: left;"
+						name="age" id="age" class="no_symbol"
+						placeholder="请填写年龄" maxlength="2" readonly/>
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="group">
+				<div style="width:30%;">性别</div>
+				<div style="width: 70%;">
+					<input type="text"
+						style="background: #FFFFFF; text-shadow: #fff 0px 0px 0px; padding: 0px; width: 80%; float: left;"
+						name="gender" id="gender" class="no_symbol" placeholder="请选择性别"
+						maxlength="14" readonly /> <img src="images/right.png"
+						style="position: absolute; right: 0px; top: 22px; height: 12px;" readonly>
+				</div>
+			</div>
+
+
+
+
+			<div class="line"></div>
+			<div class="group">
+				<div style="width:30%;">身高</div>
+				<div style="width: 70%;">
+					<input type="text"
+						   style="background: #FFFFFF; text-shadow: #fff 0px 0px 0px; padding: 0px; width: 80%; float: left;"
+						   name="height" id="height" class="no_symbol"
+						   placeholder="请填写身高（cm）" maxlength="3" />
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="group">
+				<div style="width:30%;">体重</div>
+				<div style="width: 70%;">
+					<input type="text"
+						   style="background: #FFFFFF; text-shadow: #fff 0px 0px 0px; padding: 0px; width: 80%; float: left;"
+						   name="weight" id="weight" class="no_symbol"
+						   placeholder="请填写体重（kg）" maxlength="3" />
+				</div>
+			</div>
+			<div class="line"></div>
+			<div class="group">
+				<div style="width:30%;">民族</div>
+				<div style="width: 70%;">
+					<input type="text"
+						   style="background: #FFFFFF; text-shadow: #fff 0px 0px 0px; padding: 0px; width: 80%; float: left;"
+						   name="national" id="national" class="no_symbol"
+						   placeholder="请填写民族" maxlength="12" />
+				</div>
+			</div>
+
+		</div>
+
+
+		<div class="res-btn">
+			<button type="button" id="res-btn" class="am-btn am-btn-block"
+				style="width: 95%;height: 44px;border-radius: 6px;margin: 30px auto 20px;font-size: 17px;color: #ffffff;"
+				onclick="go_step3()">下一步</button>
+		</div>
+		<!-- <p style="width: 100%;text-align:center;margin: auto;font-size: 14px;font-weight: 400;line-height: 17px;color:#999999;">
+			如果您已经取样成功，可直接<a href="#" style="color:#75CEC8">预约顺丰快递</a>
+		</p> -->
+	</div>
+	<script type="text/javascript">
+    	function GetRequest() {
+			var url = location.search; //获取url中"?"符后的字串
+			var url = decodeURI(url);
+			var theRequest = new Object();
+			if (url.indexOf("?") != -1) {
+				var str = url.substr(1);
+				strs = str.split("&");
+				for (var i = 0; i < strs.length; i++) {
+					theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+				}
+			}
+			return theRequest;
+		}
+		var Request = new Object();
+		Request = GetRequest();
+		var valOpenid = Request['openid'];
+		var sample_id = Request['sample_id'];
+		var name = Request['name'];
+		var age = Request['age'];
+		var gender = Request['gender'];
+
+		var height = Request['height'];
+		var weight = Request['weight'];
+		var national = Request['national'];
+
+		if (name != undefined && age != undefined && gender != undefined && height != undefined && weight != undefined && national != undefined ){
+			$('#name').val(name);
+			$('#age').val(age);
+			$('#gender').val(gender);
+
+			$('#height').val(height);
+			$('#weight').val(weight);
+			$('#national').val(national);
+		}
+		
+		// DOM 弹窗
+		function handleDomMsg(message) {
+			const div = document.createElement("div");
+			document.body.appendChild(div);
+			div.innerHTML = message || "this is a Message";
+			div.className = "popupStyle";
+			div.style.display = "block";
+			setTimeout(() => {
+				div.remove();
+			}, 2000);
+		}
+		
+		function go_step1(){
+			var url = encodeURI("./step1_0.html?openid="+valOpenid+"&sample_id="+sample_id+"&name="+name+"&age="+age+"&gender="+gender+"&height="+height+"&weight="+weight+"&national="+national);
+			window.location = url;
+		}
+		
+		function go_step3(){
+			var url = encodeURI("./step3.html?openid="+valOpenid+"&sample_id="+sample_id+"&name="+name+"&age="+age+"&gender="+gender+"&height="+height+"&weight="+weight+"&national="+national);
+			window.location = url;
+		}
+		
+		//alert 弹窗不显示域名
+		var wAlert = window.alert;
+		window.alert = function (message) {
+			try {
+				var iframe = document.createElement("IFRAME");
+				iframe.style.display = "none";
+				iframe.setAttribute("src", 'data:text/plain,');
+				document.documentElement.appendChild(iframe);
+				var alertFrame = window.frames[0];
+				var iwindow = alertFrame.window;
+				if (iwindow == undefined) {
+					iwindow = alertFrame.contentWindow;
+				}
+				iwindow.alert(message);
+				iframe.parentNode.removeChild(iframe);
+			}
+			catch (exc) {
+				return wAlert(message);
+			}
+		}
+		var wConfirm = window.confirm;
+		window.confirm = function (message) {
+			try {
+				var iframe = document.createElement("IFRAME");
+				iframe.style.display = "none";
+				iframe.setAttribute("src", 'data:text/plain,');
+				document.documentElement.appendChild(iframe);
+				var alertFrame = window.frames[0];
+				var iwindow = alertFrame.window;
+				if (iwindow == undefined) {
+					iwindow = alertFrame.contentWindow;
+				}
+				iwindow.confirm(message);
+				iframe.parentNode.removeChild(iframe);
+			}
+			catch (exc) {
+				return wConfirm(message);
+			}
+		}
+	</script>
+</body>
+</html>

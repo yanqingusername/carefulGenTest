@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>查看报告</title>
+</head>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<body>
+<div id="img" style="width: 100%;height: auto">
+</div>
+<div id="buttonGroup" style="display: flex;height: 50px;margin-top: 2%;">
+    <button id="last" onclick="lastClick()" style="width: 25%;margin-left: 5%;background-color: #B13370;color: #fff;font-size: 30px;">上一页</button>
+    <button onclick="download()" style="width: 25%;margin-left: 5%;background-color: #B13370;color: #fff;font-size: 30px;">下载报告</button>
+    <button id="next" onclick="nextClick()" style="width: 25%;margin-left: 5%;background-color: #B13370;color: #fff;font-size: 30px;">下一页</button>
+</div>
+</body>
+<script type="text/javascript">
+    var Request = new Object();
+    Request = GetRequest();
+    var count = Request["count"];
+    var sample_id = Request["sample_id"];
+    var open_id = Request["open_id"];
+    var reportUrl = "";
+    var imgSrv = "http://store.coyotebio-lab.com/image/"+count+".jpg";
+
+    var numOfPost = 0
+    getSampleList()
+    function getSampleList(){
+
+        $.ajax({
+            url : "../api/showPdfDetails.hn",
+            type : 'POST',
+            data: {"open_id": open_id,"sample_id":sample_id},
+            dataType : "json",
+            success : function(data) {
+                if(data.success){
+                    $("#sample_id").html(sample_id);
+                    var info = data.msg[0];
+                    var snpResult = info.snpResult.split(";");
+                    reportUrl = info.reportUrl;
+                    var order = "";
+
+                    for (var i =0 ; i<snpResult.length;i++){
+
+                        if (snpResult[i] == "positive"){
+                            numOfPost = numOfPost+1;
+                            order = order +"1";
+                        }else{
+                            order = order +"0";
+                        }
+                    }
+                    if (count == 9){
+                        $("#next").css("disabled","true")
+                        $("#next").css("background-color","#F6F6F6")
+                        $("#next").css("color","#101010")
+                        $("#next").removeAttr("onclick");
+                        $("#img").html(
+                            '<img src="'+imgSrv+'" width="100%" height="auto">'
+                        )
+                    }
+                    else if (count == 3){
+                        imgSrv = "http://store.coyotebio-lab.com/image/"+order+".jpg";
+                        $("#img").html(
+                            '<img src="'+imgSrv+'" width="100%" height="auto">'
+                        )
+
+
+                    }else{
+                        $("#img").html(
+                            '<img src="'+imgSrv+'" width="100%" height="auto">'
+                        )
+
+                    }
+
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+
+    function nextClick(){
+        var num = Number(count)+1;
+        var myurl="./pdf_img.html?count="+num+"&sample_id="+sample_id+"&open_id="+open_id;
+        window.location.href=myurl;
+    }
+    function lastClick(){
+        debugger
+        var num = Number(count)-1;
+        if (num == 1){
+            var myurl="./mouth_luogan.html?count="+num+"&sample_id="+sample_id+"&open_id="+open_id;
+            window.location.href=myurl;
+        }else{
+            var myurl="./pdf_img.html?count="+num+"&sample_id="+sample_id+"&open_id="+open_id;
+            window.location.href=myurl;
+        }
+
+    }
+
+    function download() {
+        window.location.href=reportUrl;
+    }
+
+</script>
+</html>

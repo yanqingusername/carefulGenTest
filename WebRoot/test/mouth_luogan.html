@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>查看报告</title>
+
+</head>
+<style type="text/css">
+    .textLeft{
+        font-size: 30px;
+        text-align: left;
+        padding-left: 10%;
+        width: 30%;
+    }
+    .textRight{
+        font-size: 30px;
+        text-align: center;
+        margin-left: 10%;
+        width: 40%;
+    }
+    .flex{
+        display: flex;
+        justify-content: center;
+        width: 60%;
+        margin-top: 3%;
+    }
+
+    .end{
+        margin-top: 20%;
+        text-align: right;
+        font-size: 30px;
+        height: 20%;
+        color: #B13370;
+    }
+    .endDiv{
+        font-size: 25px;
+    }
+
+</style>
+<body>
+<div id="body">
+    <div id="head"><img src="http://store.coyotebio-lab.com//image/coyote.png" width="100%" height="auto"></div>
+    <div id="medimg"><img src="http://store.coyotebio-lab.com/image/blue_man.png" width="100%" height="auto"></div>
+    <div id="down">
+        <div id="title" style="display: flex;margin-top: 10%;height: 80rpx;">
+            <div style="width: 70%;height: 100%;margin-left: 10%;font-size: 60px;color: #B13370;">
+                口腔幽门螺杆菌检测报告
+            </div>
+            <div id="arrow" style="width: 10%;height: 80rpx;margin-right: 10%;/* min-height: 79px; */">
+                <img src="http://store.coyotebio-lab.com/image/arrow.png" width="100%" height="auto" style="height: 100%;width: 100%;min-height: 55px;">
+            </div>
+        </div>
+
+        <div id="down_med">
+            <div class="flex">
+                <div class="textLeft">姓名:</div>
+                <div class="textRight" id="name"></div>
+            </div>
+            <div class="flex">
+                <div class="textLeft">性别:</div>
+                <div id="gender" class="textRight"></div>
+            </div>
+            <div class="flex">
+                <div class="textLeft">出生日期:</div>
+                <div id="birth" class="textRight"></div>
+            </div>
+            <div class="flex">
+                <div class="textLeft">样本编号:</div>
+                <div id="sample_id" class="textRight"></div>
+            </div>
+
+        </div>
+        <div id="root" style="display: flex;margin-top: 10%">
+            <div class="flex" style="margin-left: 10%;">
+                <div class="endDiv" >采样日期:</div>
+                <div class="endDiv" style="border-bottom: 2px solid;height: 100%;" id="sampling_time">2021-03-01</div>
+            </div>
+            <div class="flex">
+                <div class="endDiv">送检日期:</div>
+                <div class="endDiv" style="border-bottom: 2px solid;height: 100%;" id="receive_time">2021-03-04</div>
+            </div>
+            <div class="flex" style="margin-right: 10%;">
+                <div class="endDiv">报告日期:</div>
+                <div class="endDiv" id="report_time" style="border-bottom: 2px solid;height: 100%;font-size: 25px"  class="text">2021-03-06</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="end">
+        Precision Health For Every Family
+    </div>
+    <div id="buttonGroup" style="display: flex;height: 50px;margin-top: 2%;">
+        <button id="last" style="width: 25%;margin-left: 5%;background-color: #B13370;color: #fff;font-size: 30px;">上一页</button>
+        <button onclick="download()" style="width: 25%;margin-left: 5%;background-color: #B13370;color: #fff;font-size: 30px;">下载报告</button>
+
+        <button id="next" onclick="nextClick()" style="width: 25%;margin-left: 5%;background-color: #B13370;color: #fff;font-size: 30px;">下一页</button>
+
+    </div>
+</div>
+
+</body>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript">
+    var Request = new Object();
+    var count = 1;
+    Request = GetRequest();
+    var sample_id = Request["sample_id"];
+    var open_id = Request["open_id"];
+    var reportUrl = "";
+    getSampleList();
+    function getSampleList(){
+        $.ajax({
+            url : "../api/showPdfDetails.hn",
+            type : 'POST',
+            data: {"open_id": open_id,"sample_id":sample_id},
+            dataType : "json",
+            success : function(data) {
+                if(data.success){
+                    $("#sample_id").html(sample_id);
+                    var info = data.msg[0];
+                    var name = info.NAME;
+                    var gender = info.gender;
+                    var sampling_time = info.sampling_time;
+                    var receive_time = info.receive_time;
+                    var report_time = info.report_time;
+                    reportUrl = info.reportUrl;
+
+                    $("#name").html(name);
+                    $("#gender").html(gender);
+                    if (sampling_time.length!=0){
+                        $("#sampling_time").html(sampling_time.substring(0,10));
+                    }
+                    if (receive_time.length!=0){
+                        $("#receive_time").html(receive_time.substring(0,10));
+                    }
+                    if (report_time.length!=0){
+                        $("#report_time").html(report_time.substring(0,10));
+                    }
+
+
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+    if (count == 1){
+        $("#last").css("disabled","true")
+        $("#last").css("background-color","#F6F6F6")
+        $("#last").css("color","#101010")
+
+    }
+    function nextClick(){
+        var num = Number(count)+1;
+        var myurl="./pdf_img.html?count="+num+"&sample_id="+sample_id+"&open_id="+open_id+"&reportUrl="+reportUrl;
+        window.location.href=myurl;
+    }
+    function download() {
+        window.location.href=reportUrl;
+    }
+
+</script>
+</html>

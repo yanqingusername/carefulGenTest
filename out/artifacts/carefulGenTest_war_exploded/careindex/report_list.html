@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>我的报告</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover">
+<script src="../js/jquery.js"></script>
+<style type="text/css">
+.search_info {
+	height: 13%;
+	width: 100%;
+	background-color: #FFFFFF;
+	display: flex;
+}
+
+.change_user {
+	height: 7%;
+	width: 100%;
+	background-color: #FFFFFF;
+	display: flex;
+}
+
+#search_report {
+	width: 70%;
+	height: 36px;
+	border-radius: 6px;
+	border: unset;
+	background-color: #F5F5F5;
+	margin-top: 5%;
+	margin-left: 5%;
+	margin-bottom: 5%;
+	font-size: 14px;
+	padding-left: 15px;
+	-webkit-appearance: none;
+	box-shadow: unset;
+	outline: none;
+}
+
+#search_report::placeholder {
+	font-size: 14px;
+	position: relative;
+	color: #999999;
+}
+
+.search_button {
+	border: 0px #FFFFFF solid;
+	background-color: #FFFFFF;
+	font-size: 16px;
+	color: #75CEC8;
+	margin: auto;
+	-webkit-appearance: none;
+	-webkit-box-shadow: 0 0 0px 1000px white inset !important;
+	/*去掉边框样式和阴影  */
+}
+
+.searchbutton {
+	font-size: 16px;
+	color: #75CEC8;
+	margin: auto;
+	-webkit-appearance: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.report_info {
+	background-color: #F5F5F5;
+	height: 80%;
+	width: 100%;
+	border-radius: 10px;
+	padding-top: 5%;
+}
+
+.line {
+	width: 90%;
+	margin: auto;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+.top_info {
+	background-color: #FFFFFF;
+}
+</style>
+</head>
+<body style="background-color:#F5F5F5; margin: 0; padding: 0px; ">
+	<div class="report_page">
+
+		<div class="top_info" id="top_info">
+			<div class="change_user">
+				<img src="images/user.png"
+					style="width:30px;height:30px;padding: 10px 20px;"> <span id="phone"
+					style="padding-top:15px ;font-weight: 400;color: #333333;line-height: 20px;font-size: 14px">***********</span>
+				<div class="searchbutton" onclick="changer_user()"
+					style="margin-block: auto; margin-right: 5%;-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">切换账号</div>
+			</div>
+			<div class="line"></div>
+			<div class="search_info" id="search_info">
+				<input id="search_report" type="text" placeholder="请输入受检者姓名/样本编号"
+					maxlength="12" />
+				<div class="searchbutton" onclick="getreport_info()">搜索</div>
+			</div>
+		</div>
+
+		<div class="report_info"></div>
+	</div>
+	<div class="detail_page">
+		<div class="detail_page_part1"></div>
+
+		<div class="detail_page_part2"></div>
+	</div>
+
+	<script type="text/javascript">
+		$(function() {
+			var isPageHide = false;
+			window.addEventListener('pageshow', function() {
+				if (isPageHide) {
+					window.location.reload();
+				}
+			});
+			window.addEventListener('pagehide', function() {
+				isPageHide = true;
+			});
+		})
+
+		var phone = "";
+		var start = 0;
+		var limit = 10;
+	
+		$(function() {
+			reflush();
+			getreport_info();
+		});
+	
+		//初始化查询报告页面
+		function reflush() {
+			$('.reportInfo').remove();
+			$('.report_info').empty();
+			$("#search_report").val("");
+		}
+	
+		//获取报告查询
+		function getreport_info() {
+			//每次查询先初始化页面
+			$('.reportInfo').remove();
+			$('.report_info').empty();
+			var searchinfo = $("#search_report").val();
+	
+			var list = "";
+	
+			$('.report_info').append(list);
+			$.ajax({
+				url : "../apihealth/getcareindexReportInfo.hn",
+				type : "get",
+				dataType : "json",
+				data : {
+					"searchinfo" : searchinfo
+				},
+				success : function(data) {
+					if (data.success) {
+						console.log(data.phone);
+						$("#phone").html(data.phone);
+						if ((data.result != "" && searchinfo != "") || data.result != "") {
+							$.each(data.result, function(i, res) {
+								var sample_id = res["sample_id"];
+								var name = res["name"];
+								var create_time = res["create_time"];
+								var test_name = res["commodity_name"];
+								if(test_name.length>=11){
+									test_name = test_name.substring(0,9)+"...";
+								}
+								list += '<div class="reportInfo" style="border-radius: 10px;width:90%;height:40%;background-color:#ffffff;margin: auto;">';
+								list += '<div style="display:flex;padding: 20px 20px 5px 20px;align-items: center;">';
+								list += '<div class="test_name" style="font-size:18px;font-weight:600;color:#75CEC8;max-width:70%">' + test_name + '</div>';
+								list += '<div style="margin-left:auto;"  id="create_time">';
+								list += '<span  id="sampling_detail" style="font-size:14px;color:#999999;font-weight: 400;">' + create_time + '</span></div></div>';
+								list += '<div class="line"></div>'
+								list += '<div style="display:flex;padding: 15px 20px 10px;font-size:14px;color: #333333;" class="sample_id">样本编号 <div class="sample_id" style="display:flex;padding: 0px 13.5% 5px;font-size:14px;color: #333333;" >' + sample_id + '</div></div>';
+								list += '<div style="display:flex;padding: 15px 20px 10px;font-size:14px;color: #333333;" class="name" >受检者姓名';
+								list += '<div class="sample_id" style="display:flex;padding: 0px 10% 5px;font-size:14px;color: #333333;" >' + name + '</div></div>';
+								if(res["sample_status"]=="5"){
+									list += '<div class="report_button" style="padding:10px 20px 20px 65%;display:flex;">';
+									if ("美肤美肌检测"==test_name){
+										list += '<button class="second_button" onclick=read_meifureport("' + sample_id + '"); style="background-color: #75CEC8;color:#ffffff;width:100px;height:34px;border-radius: 6px;border:unset;font-size:14px;font-weight:400;" >查看报告</button>';
+									}else if ("HPV核酸检测" == test_name) {
+										list += '<button class="second_button" onclick=read_hpvreport("' + sample_id + '"); style="background-color: #75CEC8;color:#ffffff;width:100px;height:34px;border-radius: 6px;border:unset;font-size:14px;font-weight:400;" >查看报告</button>';
+									}else if ("肿瘤抑制基因检测" == test_name) {
+										list += '<button class="second_button" onclick=read_cancerreport("' + sample_id + '"); style="background-color: #75CEC8;color:#ffffff;width:100px;height:34px;border-radius: 6px;border:unset;font-size:14px;font-weight:400;" >查看报告</button>';
+									}else if ("健康瘦身基因检测" == test_name) {
+										list += '<button class="second_button" onclick=read_slimreport("' + sample_id + '"); style="background-color: #75CEC8;color:#ffffff;width:100px;height:34px;border-radius: 6px;border:unset;font-size:14px;font-weight:400;" >查看报告</button>';
+									}else {
+										list += '<button class="second_button" onclick=read_report("' + sample_id + '"); style="background-color: #75CEC8;color:#ffffff;width:100px;height:34px;border-radius: 6px;border:unset;font-size:14px;font-weight:400;" >查看报告</button>';
+									}
+									
+
+								}else{
+									list += '<div class="report_button" style="padding:10px 20px 20px 65%;display:flex;">';
+									list += '<button class="first_button" onclick=read_deatil("' + sample_id + '"); style="background-color: #FFFFFF;color:#75CEC8;width:100px;height:34px;border-radius: 6px;border: 1px solid #75CEC8;font-size:14px;font-weight:400;" >查看详情</button>';
+								}
+								
+								list += '</div>';
+								list += '</div>';
+								list += '<br>';
+							});
+	
+						} else if (data.result == "" && searchinfo == "") {
+							list += '<div style="padding:30% 21%" class="reportInfo">';
+							list += '<img  src="images/none.png" id="sampling_detail" style="padding:5px 35%;width:51px;height:62px"><br>';
+							list += '<span style="font-weight: 400;font-size: 14px;color: #999999;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;暂时还没有查询到检测报告</span><br><span style="font-weight: 400;font-size: 14px;color: #999999;">如有疑问，可咨询客服 400-168-7220</span>';
+							list += '</div>';
+						} else if (data.result.length == 0 && searchinfo != "") {
+							list += '<div class="reportInfo" style="color:#999999;font-size:14px;font-weight: 400;width: 154px;height: 20px;text-align: center; margin: auto;margin-top: 30%;line-height: 20px;">';
+							list += '没有搜索到相关检测报告';
+							list += '</div>';
+						}
+						$('.reportInfo').remove();
+						$('.report_info').append(list);
+					} else {
+						alert(data.msg);
+					}
+				}
+			});
+	
+		}
+	
+		function changer_user() {
+
+			window.location = "./login.html";
+		}
+
+		function read_meifureport(sample_id) {
+			//window.location.href="http://xmr.coyotebio-lab.com:8080/lis/web/bankindex.html";
+
+						window.location.href="./Beauty_skin.html?sample_id="+sample_id;
+
+
+		}
+		function read_hpvreport(sample_id) {
+			//window.location.href="http://xmr.coyotebio-lab.com:8080/lis/web/bankindex.html";
+			window.location.href="./HPV_Report.html?sample_id="+sample_id;
+		}
+		function read_cancerreport(sample_id) {
+			//window.location.href="http://xmr.coyotebio-lab.com:8080/lis/web/bankindex.html";
+			window.location.href="./Cancersuppression.html?sample_id="+sample_id;
+		}
+		function read_slimreport(sample_id) {
+			//window.location.href="http://xmr.coyotebio-lab.com:8080/lis/web/bankindex.html";
+			window.location.href="./Slimming.html?sample_id="+sample_id;
+		}		
+		function read_report(sample_id) {
+			//终端类型判断
+			//window.location = "./report_preview.html?reportUrl=" + reportUrl;
+			window.location = "./report_preview.html?sample_id=" + sample_id;
+		}
+	
+		function sample_back(sample_id) {
+			window.location = "./SF_appointment.html?sample_id=" + sample_id;
+		}
+	
+		function read_deatil(sample_id) {
+			window.location = "./report_progress.html?sample_id=" + sample_id;
+		}
+		
+		//alert 弹窗不显示域名
+		var wAlert = window.alert;
+		window.alert = function (message) {
+			try {
+				var iframe = document.createElement("IFRAME");
+				iframe.style.display = "none";
+				iframe.setAttribute("src", 'data:text/plain,');
+				document.documentElement.appendChild(iframe);
+				var alertFrame = window.frames[0];
+				var iwindow = alertFrame.window;
+				if (iwindow == undefined) {
+					iwindow = alertFrame.contentWindow;
+				}
+				iwindow.alert(message);
+				iframe.parentNode.removeChild(iframe);
+			}
+			catch (exc) {
+				return wAlert(message);
+			}
+		}
+		var wConfirm = window.confirm;
+		window.confirm = function (message) {
+			try {
+				var iframe = document.createElement("IFRAME");
+				iframe.style.display = "none";
+				iframe.setAttribute("src", 'data:text/plain,');
+				document.documentElement.appendChild(iframe);
+				var alertFrame = window.frames[0];
+				var iwindow = alertFrame.window;
+				if (iwindow == undefined) {
+					iwindow = alertFrame.contentWindow;
+				}
+				iwindow.confirm(message);
+				iframe.parentNode.removeChild(iframe);
+			}
+			catch (exc) {
+				return wConfirm(message);
+			}
+		}
+	</script>
+</body>
+</html>
