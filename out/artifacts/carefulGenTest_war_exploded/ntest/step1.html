@@ -330,52 +330,6 @@
 			border-color: #555 transparent transparent transparent;
 		}
 
-		.read-class{
-			display: flex;
-			margin-left: 10px;
-			align-items: center;
-		}
-
-		.radiou-class{
-			width: 15px;
-			height: 15px;
-			border-radius: 50%;
-			background: #75CEC8;
-			color: #75CEC8;
-			margin-right: 6px;
-		}
-
-		.read-radio{
-			color: #75CEC8 !important;
-			margin: 0px 6px 0px 0px !important;
-		}
-
-		a{		/*默认状态*/
-			color: #75CEC8;
-			text-decoration:underline;
-		}
-
-		.piaochecked {
-			float: left;
-			cursor: pointer;
-			text-align: center;
-			background-image: url(images/icon_radio_selected@3x.png);
-			background-size: 16px;
-			background-repeat: no-repeat;
-			background-position: 0 5px;
-		}
-
-		.on_check {
-			background-image: url(images/icon_radio_default@3x.png);
-		}
-
-		.radioclass {
-			opacity: 0;
-			cursor: pointer;
-			-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-			filter: alpha(opacity = 0);
-		}
-
 	</style>
 </head>
 
@@ -430,44 +384,8 @@
 				style="width: 95%;height: 44px;border-radius: 6px;margin: 30px auto 20px;font-size: 17px;color: #ffffff;"
 				disabled="disabled" onclick="bind_sampleId()">下一步</button>
 		</div>
-
-<!--		<div class="read-class">-->
-<!--			<input class="read-radio" type="radio" title="" checked="true"/>已阅读并同意<a href="./read.html" style="color:#75CEC8">《产品知情同意书》</a>-->
-<!--		</div>-->
-
-		<div class="weui-cells_checkbox">
-			<label class="weui-check__label" for="xly" style="margin-left: 10px;font-weight: unset;">
-				<div class="piaochecked" style="padding-left: 18px;" >
-					<input type="checkbox" class="weui-check radioclass input"
-						   name="checkbottom1" id="xly" style="width:0;"> <i style="width: 10%;"
-																			 class="weui-icon-checked" style="text-align:center"></i>
-					<div style="float: right;text-align:left;font-size: 11px;color: #999999;display: contents;">
-						已阅读并同意
-					</div>
-				</div>
-				<a href="./read.html" style="font-size: 11px;color:#75CEC8">《产品知情同意书》</a>
-			</label>
-		</div>
-
-<!--		<div class="read-class">-->
-<!--			<div class="radiou-class"></div> 已阅读并同意<a href="./read.html" style="color:#75CEC8">《产品知情同意书》</a>-->
-<!--		</div>-->
-
-
-		<div class="res-btn">
-			<div style="display:flex;width: 60%;height: 40px;border-radius: 6px;margin: 120px auto 20px;font-size: 17px;color: #75CEC8;background: #ffffff;align-items: center;justify-content: center;"
-					onclick="look_sampleId()">查看已绑定样本</div>
-		</div>
-
 	</div>
 	<script type="text/javascript">
-
-		$(".piaochecked").off("click").on("click", function() {
-			$(this).hasClass("on_check") ? $("#xly").prop('checked','true') : $("#xly").removeAttr("checked");
-			$(this).hasClass("on_check") ? $(this).removeClass("on_check") : $(this).addClass("on_check");
-			return false;
-		})
-
 		function changesampleid(sampleid) {
 			var value = sampleid.replace(/\s/g, '').replace(/(\w{4})(?=\w)/g, "$1 ");
 			return value;
@@ -623,15 +541,6 @@
 				return wConfirm(message);
 			}
 		}
-
-		function openRead() {
-			console.log('111')
-		}
-		
-		function look_sampleId() {
-			window.location.href="./report_list.html"
-		}
-
 	</script>
 </body>
 
